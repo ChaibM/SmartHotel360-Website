@@ -32,15 +32,15 @@ steps:
     displayName: Run ARM TTK tests 
     name: TTKtests
     inputs:
-      templatelocation: '$(System.DefaultWorkingDirectory)\Deploy\azure-pipelines.yml'
-      resultLocation: '$(System.DefaultWorkingDirectory)\results'
+      templatelocation: '$(System.DefaultWorkingDirectory)/Deploy/azure-pipelines.yml'
+      resultLocation: '$(System.DefaultWorkingDirectory)/results'
 
 - task: PublishTestResults@2
     displayName: Publish test restults
     name: PublishResults
     inputs:
       testResultsFormat: 'NUnit'
-      testResultsFiles: '$(System.DefaultWorkingDirectory)\results\*-armttk.xml'
+      testResultsFiles: '$(System.DefaultWorkingDirectory)/results/*-armttk.xml'
     condition: always()
 
 - task: VSTest@2
