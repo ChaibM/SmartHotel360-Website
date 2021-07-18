@@ -15,8 +15,8 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: RunARMTTKTests@1
+- task: PublishTestResults@2
   inputs:
-    templatelocation: '$(System.DefaultWorkingDirectory)'
-    resultLocation: '$(System.DefaultWorkingDirectory)\results'
-
+    testResultsFormat: 'NUnit'
+    testResultsFiles: '$(System.DefaultWorkingDirectory)\results\*-armttk.xml'
+  condition: always()
