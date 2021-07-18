@@ -19,8 +19,4 @@ steps:
   inputs:
     templatelocation: '$(System.DefaultWorkingDirectory)\Deploy\'
     resultLocation: '$(System.DefaultWorkingDirectory)\results'
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'NUnit'
-    testResultsFiles: '$(System.DefaultWorkingDirectory)\results\*-armttk.xml'
-  condition: always()
+
