@@ -19,12 +19,3 @@ steps:
   displayName: 'Azure Resource Manager Template Tester'
   inputs:
     Templatefolder: '$(System.DefaultWorkingDirectory)/arm/*'
-- task: RunARMTTKTests@1
-  inputs:
-    templatelocation: '$(System.DefaultWorkingDirectory)\arm\*
-    resultLocation: '$(System.DefaultWorkingDirectory)/result'
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'NUnit'
-    testResultsFiles: '$(System.DefaultWorkingDirectory)/results/*-armttk.xml'
-  condition: always()
