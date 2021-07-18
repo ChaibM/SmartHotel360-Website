@@ -17,8 +17,8 @@ variables:
 steps:
 - task: RunARMTTKTests@1
   inputs:
-    templatelocation: '$(System.DefaultWorkingDirectory)/Deploy'
-    resultLocation: '$(System.DefaultWorkingDirectory)/results'
+    templatelocation: '$(System.DefaultWorkingDirectory)/*'
+    resultLocation: '$(System.DefaultWorkingDirectory)/*'
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'NUnit'
