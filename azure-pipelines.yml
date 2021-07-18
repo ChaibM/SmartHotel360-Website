@@ -28,6 +28,21 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: RunARMTTKTests@1
+    displayName: Run ARM TTK tests 
+    name: TTKtests
+    inputs:
+      templatelocation: '$(System.DefaultWorkingDirectory)\Deploy\azure-piplines.yml'
+      resultLocation: '$(System.DefaultWorkingDirectory)\results'
+
+- task: PublishTestResults@2
+    displayName: Publish test restults
+    name: PublishResults
+    inputs:
+      testResultsFormat: 'NUnit'
+      testResultsFiles: '$(System.DefaultWorkingDirectory)\results\*-armttk.xml'
+    condition: always()
+
 - task: VSTest@2
   inputs:
     platform: '$(buildPlatform)'
@@ -41,7 +56,7 @@ steps:
     publishWebProjects: false
     arguments: --no-build --configuration Release --output $(Build.ArtifactStagingDirectory)/Release
     zipAfterPublish: true
-    
+
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
   condition: succeeded()
