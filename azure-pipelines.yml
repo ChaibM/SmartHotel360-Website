@@ -17,6 +17,6 @@ variables:
 steps:
 - task: RunARMTTKTests@1
   inputs:
-    templatelocation: '$(System.DefaultWorkingDirectory)\Deploy\'
+    templatelocation: '$(System.DefaultWorkingDirectory)'
     resultLocation: '$(System.DefaultWorkingDirectory)\results'
 
