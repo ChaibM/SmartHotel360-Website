@@ -32,7 +32,7 @@ steps:
     displayName: Run ARM TTK tests 
     name: TTKtests
     inputs:
-      templatelocation: '$(System.DefaultWorkingDirectory)\Deploy\azure-piplines.yml'
+      templatelocation: '$(System.DefaultWorkingDirectory)\Deploy\azure-pipelines.yml'
       resultLocation: '$(System.DefaultWorkingDirectory)\results'
 
 - task: PublishTestResults@2
