@@ -21,19 +21,10 @@ steps:
     script: 'echo  $(Build.SourcesDirectory) ' 
 
     
-- task: RunARMTTKTests@1
+- task: arm-ttk@1
   inputs:
-    templatelocation: '$(System.DefaultWorkingDirectory)/arm/azuredeploy.json'
-    resultLocation: '$(System.DefaultWorkingDirectory)/arm'
-    allTemplatesMain: false
-  
-
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'NUnit'
-    testResultsFiles: '$(System.DefaultWorkingDirectory)/arm'
-  condition: always()
-
+    Templatefolder: '$(System.DefaultWorkingDirectory)/*'
+    
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
