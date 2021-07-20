@@ -18,12 +18,12 @@ variables:
 steps:
 - task: CmdLine@2
   inputs:
-    script: 'ls' 
+    script: 'cd Deploy  ' 
     
 - task: RunARMTTKTests@1
   inputs:
-    templatelocation: '$(System.DefaultWorkingDirectory)\**\arm\azuredeploy.json'
-    resultLocation: '$(System.DefaultWorkingDirectory)\**\arm'
+    templatelocation: '$(System.DefaultWorkingDirectory)\Deploy\'
+    resultLocation: '$(System.DefaultWorkingDirectory)\'
     allTemplatesMain: false
 
 - task: VSBuild@1
