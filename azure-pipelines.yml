@@ -20,9 +20,14 @@ steps:
   inputs:
     templatelocation: '$(System.DefaultWorkingDirectory)/*'
     resultLocation: '$(System.DefaultWorkingDirectory)/'
+    includeTests: 'VM Images Should Use Latest Version,Resources Should Have Location'
+    skipTests: 'VM Images Should Use Latest Version,Resources Should Have Location'
+    mainTemplates: 'azuredeploy.json'
+    allTemplatesMain: false
+    cliOutputResults: true
+
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'NUnit'
     testResultsFiles: '$(System.DefaultWorkingDirectory)/*-armttk.xml'
   condition: always()
-
