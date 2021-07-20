@@ -16,14 +16,13 @@ variables:
 
 steps:
 
-- task: arm-ttk@1
+- task: RunARMTTKTests@1
   inputs:
-    Templatefolder: '$(System.DefaultWorkingDirectory)/*'
-
-
+    templatelocation: '$(System.DefaultWorkingDirectory)/*'
+    resultLocation: '$(System.DefaultWorkingDirectory)/'
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'NUnit'
-    testResultsFiles: '$(System.DefaultWorkingDirectory)/'
+    testResultsFiles: '$(System.DefaultWorkingDirectory)/*-armttk.xml'
   condition: always()
 
