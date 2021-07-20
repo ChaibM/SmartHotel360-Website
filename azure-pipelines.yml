@@ -18,7 +18,7 @@ variables:
 steps:
 - task: CmdLine@2
   inputs:
-    script: 'echo $(System.DefaultWorkingDirectory)' 
+    script: 'ls' 
     
 - task: RunARMTTKTests@1
   inputs:
