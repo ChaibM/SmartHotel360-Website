@@ -16,9 +16,7 @@ variables:
 
 steps:
 
-- task: RunARMTTKTests@1
+- task: arm-ttk@1
   inputs:
-    templatelocation: '$(System.DefaultWorkingDirectory)/*'
-    resultLocation: '$(System.DefaultWorkingDirectory)/'
-    allTemplatesMain: false
+    Templatefolder: '$(System.DefaultWorkingDirectory)/*'
 
