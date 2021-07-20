@@ -22,8 +22,8 @@ steps:
     
 - task: RunARMTTKTests@1
   inputs:
-    templatelocation: '$(System.DefaultWorkingDirectory)\Deploy\*'
-    resultLocation: '$(System.DefaultWorkingDirectory)'
+    templatelocation: '$(Build.SourcesDirectory)/arm/*'
+    resultLocation: '$(System.DefaultWorkingDirectory)\results'
     allTemplatesMain: false
 
 - task: PublishTestResults@2
