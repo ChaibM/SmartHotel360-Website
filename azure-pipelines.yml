@@ -26,6 +26,11 @@ steps:
     resultLocation: '$(System.DefaultWorkingDirectory)'
     allTemplatesMain: false
 
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'NUnit'
+    testResultsFiles: '$(System.DefaultWorkingDirectory)'
+
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
