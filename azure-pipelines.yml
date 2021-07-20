@@ -18,7 +18,7 @@ variables:
 steps:
 - task: CmdLine@2
   inputs:
-    script: 'ls Source ' 
+    script: 'echo  $(Build.SourcesDirectory) ' 
   
 - task: arm-ttk@1
   inputs:
