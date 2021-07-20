@@ -19,12 +19,17 @@ steps:
 - task: CmdLine@2
   inputs:
     script: 'ls Source ' 
+  
+- task: arm-ttk@1
+  inputs:
+    Templatefolder: '$(System.DefaultWorkingDirectory)\Deploy\*'
     
 - task: RunARMTTKTests@1
   inputs:
-    templatelocation: '$(Build.SourcesDirectory)/arm/*'
+    templatelocation: '$(System.DefaultWorkingDirectory)\Deploy\*'
     resultLocation: '$(System.DefaultWorkingDirectory)\results'
     allTemplatesMain: false
+  
 
 - task: PublishTestResults@2
   inputs:
