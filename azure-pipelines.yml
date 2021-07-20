@@ -16,6 +16,9 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: CmdLine@2
+  inputs:
+    script: 'echo $(System.DefaultWorkingDirectory)' 
     
 - task: RunARMTTKTests@1
   inputs:
