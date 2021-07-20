@@ -22,8 +22,8 @@ steps:
     
 - task: RunARMTTKTests@1
   inputs:
-    templatelocation: '$(System.DefaultWorkingDirectory)\Deploy\'
-    resultLocation: '$(System.DefaultWorkingDirectory)\'
+    templatelocation: '$(System.DefaultWorkingDirectory)\Deploy'
+    resultLocation: '$(System.DefaultWorkingDirectory)'
     allTemplatesMain: false
 
 - task: VSBuild@1
