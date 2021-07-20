@@ -18,7 +18,7 @@ variables:
 steps:
 - task: CmdLine@2
   inputs:
-    script: 'ls Deploy ' 
+    script: 'ls Source ' 
     
 - task: RunARMTTKTests@1
   inputs:
