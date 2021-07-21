@@ -18,7 +18,7 @@ steps:
 
 - task: RunARMTTKTests@1
   inputs:
-    templatelocation: '$(System.DefaultWorkingDirectory)/*.json'
+    templatelocation: '$(System.DefaultWorkingDirectory)/azuredeploy.json'
     resultLocation: '$(System.DefaultWorkingDirectory)/'
     cliOutputResults: true
 
