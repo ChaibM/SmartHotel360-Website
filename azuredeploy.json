@@ -105,7 +105,7 @@
         },
         {
             "type": "Microsoft.Web/serverfarms",
-            "apiVersion": "2019-08-01",
+            "apiVersion": "2020-02-02",
             "name": "[variables('stopsFunctionsWebFarmName')]",
             "location": "[parameters('location')]",
             "tags": "[variables('resourceTags')]",
