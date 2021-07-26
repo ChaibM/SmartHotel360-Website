@@ -1,9 +1,303 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {},
-  "functions": [],
-  "variables": {},
-  "resources": [],
-  "outputs": {}
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "env": {
+            "defaultValue": "d",
+            "type": "string",
+            "allowedValues": [
+                "d",
+                "q",
+                "p"
+            ],
+            "metadata": {
+               "description": "The environment preffix for ressources."
+            }
+        },
+        "firstDeploy": {
+            "defaultValue": "false",
+            "type": "bool",
+            "metadata": {
+                "description": "The value indicating the first deploy to the resource group."
+            }
+        },
+        "location": {
+            "defaultValue": "[resourceGroup().location]",
+            "type": "string",
+            "metadata": {
+               "description": "The location for ressources."
+            }
+        },
+        "subsidiary": {
+            "defaultValue": "mad",
+            "type": "string",
+            "metadata": {
+               "description": "The subsidiary name."
+            }
+        },
+        "stopsFunctionAppName": {
+            "defaultValue": "stop",
+            "type": "string",
+            "metadata": {
+               "description": "The name of the stops function app to create."
+            }
+        },
+        "sqlsrvnameAdminLogin": {
+            "type": "string",
+            "minLength": 1
+        },
+        "sqlsrvnameAdminLoginPassword": {
+            "type": "securestring"
+        },
+        "databaseName": {
+            "defaultValue": "MAD",
+            "type": "string",
+            "metadata": {
+               "description": "The database name."
+            }
+        }
+    },
+    "variables": {
+        "projectName": "mad",
+        "groupSuffix": "[substring(uniquestring(resourceGroup().id),0,5)]",
+        "sqlsrvName":"[concat(parameters('env'), '-', variables('projectName'), '-sql-srv-', parameters('subsidiary'), '-', variables('groupSuffix'))]",
+        "keyVaultName": "[concat(parameters('env'), '-', variables('projectName'), '-kv-', parameters('subsidiary'), '-', variables('groupSuffix'))]",
+        "stopsFunctionAppName": "[concat(parameters('env'), '-', variables('projectName'), '-fa-', parameters('stopsFunctionAppName'), '-', variables('groupSuffix'))]",
+        "stopsStorageAccountName": "[replace(concat(parameters('env'), variables('projectName'), 'sa', parameters('stopsFunctionAppName'), variables('groupSuffix')),'-','')]",
+        "applicationInsightsName": "[concat(parameters('env'), '-', variables('projectName'), '-appins-', parameters('stopsFunctionAppName'), '-', variables('groupSuffix'))]",
+        "stopsFunctionsWebFarmName": "[concat(parameters('env'), '-', variables('projectName'), '-asp-', parameters('stopsFunctionAppName'), '-', variables('groupSuffix'))]",
+        "resourceTags": {
+            "environment": "[parameters('env')]",
+            "program": "MAD",
+            "subsidiary": "[parameters('subsidiary')]"
+        },
+
+        
+        "keyVaultVersion": "2019-09-01",
+
+        "storageAccountSecretName": "[concat('stopsStorageAccountName','Secret')]",
+        "dbConnectionStringSecretName": "[concat('dbConnection','Secret')]",
+
+        "storageAccountResourceId": "[resourceId('Microsoft.Storage/storageAccounts', variables('stopsStorageAccountName'))]",
+        "storageAccountSecretResourceId": "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('storageAccountSecretName'))]",
+        "dbConnectionStringSecretResourceId": "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('dbConnectionStringSecretName'))]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2020-02-02",
+            "name": "[variables('applicationInsightsName')]",
+            "type": "Microsoft.Insights/components",
+            "location": "[parameters('location')]",
+            "tags": "[variables('resourceTags')]",
+            "properties": {
+                "applicationId": "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "name": "[variables('stopsStorageAccountName')]",
+            "apiVersion": "2020-12-01",
+            "location": "[parameters('location')]",
+            "tags": "[variables('resourceTags')]",
+            "properties": {
+                "accountType": "Standard_LRS"
+            }
+        },
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2016-09-01",
+            "name": "[variables('stopsFunctionsWebFarmName')]",
+            "location": "[parameters('location')]",
+            "tags": "[variables('resourceTags')]",
+            "sku": {
+                "name": "Y1",
+                "tier": "Dynamic",
+                "size": "Y1",
+                "family": "Y",
+                "capacity": 0
+            },
+            "kind": "functionapp",
+            "properties": {
+                "name": "[variables('stopsFunctionsWebFarmName')]",
+                "perSiteScaling": false,
+                "reserved": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0
+            }
+        },
+        {
+            "name": "[variables('sqlsrvName')]",
+            "type": "Microsoft.Sql/servers",
+            "location": "[parameters('location')]",
+            "tags": "[variables('resourceTags')]",
+            "apiVersion": "2021-02-01-preview",
+            "properties": {
+                "administratorLogin": "[parameters('sqlsrvnameAdminLogin')]",
+                "administratorLoginPassword": "[parameters('sqlsrvnameAdminLoginPassword')]"
+            },
+            "resources": [
+                {
+                    "name": "AllowAllWindowsAzureIps",
+                    "type": "firewallrules",
+                    "location": "[parameters('location')]",
+                    "apiVersion": "2021-02-01-preview",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Sql/servers', variables('sqlsrvName'))]"
+                    ],
+                    "properties": {
+                        "startIpAddress": "0.0.0.0",
+                        "endIpAddress": "0.0.0.0"
+                    }
+                },
+                {
+                    "name": "[parameters('databaseName')]",
+                    "type": "databases",
+                    "location": "[parameters('location')]",
+                    "apiVersion": "2021-02-01-preview",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Sql/servers', variables('sqlsrvName'))]"
+                    ],
+                    "tags": "[variables('resourceTags')]",
+                    "properties": {
+                        "collation": "SQL_Latin1_General_CP1_CI_AS",
+                        "edition": "Basic",
+                        "maxSizeBytes": "1073741824",
+                        "requestedServiceObjectiveName": "Basic"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "[variables('keyVaultVersion')]",
+            "name": "[variables('keyVaultName')]",
+            "location": "[parameters('location')]",
+            "tags": "[variables('resourceTags')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', variables('stopsFunctionAppName'))]"
+            ],
+            "properties": {
+                "enabledForDeployment": "true",
+                "enabledForDiskEncryption": "false",
+                "enabledForTemplateDeployment": "false",
+                "createMode": "[if(parameters('firstDeploy'), 'create', 'recover')]",
+                "tenantId": "[subscription().tenantId]",
+                "sku": {
+                   "name": "Standard",
+                   "family": "A"
+                },
+                "accessPolicies": "[if(parameters('firstDeploy'), json('[]'), json('null'))]"
+            },
+            "resources": [
+                {
+                    "type": "secrets",
+                    "apiVersion": "[variables('keyVaultVersion')]",
+                    "name": "[variables('storageAccountSecretName')]",
+                    "location": "[parameters('location')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]",
+                        "[resourceId('Microsoft.Storage/storageAccounts', variables('stopsStorageAccountName'))]"
+                    ],
+                    "properties": {
+                        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('stopsStorageAccountName'), ';AccountKey=', listKeys(variables('storageAccountResourceId'),'2020-12-01-preview').key1)]"
+                    }
+                },
+                {
+                    "type": "secrets",
+                    "apiVersion": "2019-09-01",
+                    "name": "[variables('dbConnectionStringSecretName')]",
+                    "location": "[parameters('location')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]",
+                        "[resourceId('Microsoft.Sql/servers', variables('sqlsrvName'))]"
+                    ],
+                    "properties": {
+                        "value": "[concat('Data Source=tcp:', reference(resourceId('Microsoft.Sql/servers/', variables('sqlsrvName'))).fullyQualifiedDomainName, ',1433;Initial Catalog=', parameters('databaseName'), ';User Id=', parameters('sqlsrvnameAdminLogin'), '@', reference(resourceId('Microsoft.Sql/servers/', variables('sqlsrvName'))).fullyQualifiedDomainName, ';Password=', parameters('sqlsrvnameAdminLoginPassword'), ';')]"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/accessPolicies",
+            "name": "[concat(variables('keyVaultName'), '/add')]",
+            "apiVersion": "[variables('keyVaultVersion')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]"
+            ],
+            "properties": {
+                "accessPolicies": [
+                    {
+                        "tenantId": "[reference(resourceId('Microsoft.Web/sites', variables('stopsFunctionAppName')), '2021-01-15', 'Full').identity.tenantId]",
+                        "objectId": "[reference(resourceId('Microsoft.Web/sites', variables('stopsFunctionAppName')), '2021-01-15', 'Full').identity.principalId]",
+                        "permissions": {
+                            "secrets": [
+                                "get",
+                                "list"
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2020-12-01",
+            "name": "[variables('stopsFunctionAppName')]",
+            "location": "[parameters('location')]",
+            "tags": "[variables('resourceTags')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('stopsFunctionsWebFarmName'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('stopsStorageAccountName'))]"
+            ],
+            "kind": "functionapp",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('stopsFunctionsWebFarmName'))]"
+            },
+            "resources": [
+                {
+                    "type": "config",
+                    "apiVersion": "2016-08-01",
+                    "name": "web",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/Sites', variables('stopsFunctionAppName'))]"
+                    ],
+                    "properties": {
+                        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('stopsFunctionsWebFarmName'))]"
+                    }
+                },
+                {
+                    "type": "config",
+                    "apiVersion": "2020-10-01",
+                    "name": "appsettings",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/sites', variables('stopsFunctionAppName'))]",
+                        "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]",
+                        "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]",
+                        "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('storageAccountSecretName'))]",
+                        "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('dbConnectionStringSecretName'))]"
+                    ],
+                    "properties": {
+                        "WEBSITE_ENABLE_SYNC_UPDATE_SITE": "true",
+                        "FUNCTIONS_EXTENSION_VERSION": "~3",
+                        "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+                        "DbConnectionString": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('dbConnectionStringSecretResourceId'),'2015-06-01').secretUriWithVersion, ')')]",
+                        "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('microsoft.insights/components/', variables('applicationInsightsName')), '2020-02-02').InstrumentationKey]",
+                        "AzureWebJobsDashboard": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('storageAccountSecretResourceId'),'2015-06-01').secretUriWithVersion, ')')]",
+                        "AzureWebJobsStorage": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('storageAccountSecretResourceId'),'2015-06-01').secretUriWithVersion, ')')]",
+                        "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('storageAccountSecretResourceId'),'2015-06-01').secretUriWithVersion, ')')]",
+                        "WEBSITE_CONTENTSHARE": "[tolower(variables('stopsFunctionAppName'))]"
+                    }
+                }
+            ]
+        }
+    ],
+    "outputs": {
+        "stopsFunctionAppName": {
+            "type": "string",
+            "value": "[variables('stopsFunctionAppName')]"
+        }
+    }
 }
