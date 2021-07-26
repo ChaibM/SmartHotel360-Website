@@ -105,7 +105,7 @@
         },
         {
             "type": "Microsoft.Web/serverfarms",
-            "apiVersion": "2020-02-02",
+            "apiVersion": "2019-08-01",
             "name": "[variables('stopsFunctionsWebFarmName')]",
             "location": "[parameters('location')]",
             "tags": "[variables('resourceTags')]",
@@ -227,8 +227,8 @@
             "properties": {
                 "accessPolicies": [
                     {
-                        "tenantId": "[reference(resourceId('Microsoft.Web/sites', variables('stopsFunctionAppName')), '2021-01-15', 'Full').identity.tenantId]",
-                        "objectId": "[reference(resourceId('Microsoft.Web/sites', variables('stopsFunctionAppName')), '2021-01-15', 'Full').identity.principalId]",
+                        "tenantId": "[reference(resourceId('Microsoft.Web/sites', variables('stopsFunctionAppName')), '2019-08-01', 'Full').identity.tenantId]",
+                        "objectId": "[reference(resourceId('Microsoft.Web/sites', variables('stopsFunctionAppName')), '2019-08-01', 'Full').identity.principalId]",
                         "permissions": {
                             "secrets": [
                                 "get",
@@ -241,7 +241,7 @@
         },
         {
             "type": "Microsoft.Web/sites",
-            "apiVersion": "2020-12-01",
+            "apiVersion": "2019-08-01",
             "name": "[variables('stopsFunctionAppName')]",
             "location": "[parameters('location')]",
             "tags": "[variables('resourceTags')]",
@@ -259,7 +259,7 @@
             "resources": [
                 {
                     "type": "config",
-                    "apiVersion": "2020-02-02",
+                    "apiVersion": "2019-08-01",
                     "name": "web",
                     "dependsOn": [
                         "[resourceId('Microsoft.Web/Sites', variables('stopsFunctionAppName'))]"
@@ -270,7 +270,7 @@
                 },
                 {
                     "type": "config",
-                    "apiVersion": "2020-10-01",
+                    "apiVersion": "2019-08-01",
                     "name": "appsettings",
                     "dependsOn": [
                         "[resourceId('Microsoft.Web/sites', variables('stopsFunctionAppName'))]",
@@ -283,11 +283,11 @@
                         "WEBSITE_ENABLE_SYNC_UPDATE_SITE": "true",
                         "FUNCTIONS_EXTENSION_VERSION": "~3",
                         "FUNCTIONS_WORKER_RUNTIME": "dotnet",
-                        "DbConnectionString": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('dbConnectionStringSecretResourceId'),'2015-06-01').secretUriWithVersion, ')')]",
+                        "DbConnectionString": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('dbConnectionStringSecretResourceId'),'2019-08-01').secretUriWithVersion, ')')]",
                         "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('microsoft.insights/components/', variables('applicationInsightsName')), '2020-02-02').InstrumentationKey]",
-                        "AzureWebJobsDashboard": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('storageAccountSecretResourceId'),'2015-06-01').secretUriWithVersion, ')')]",
-                        "AzureWebJobsStorage": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('storageAccountSecretResourceId'),'2015-06-01').secretUriWithVersion, ')')]",
-                        "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('storageAccountSecretResourceId'),'2015-06-01').secretUriWithVersion, ')')]",
+                        "AzureWebJobsDashboard": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('storageAccountSecretResourceId'),'2019-08-01').secretUriWithVersion, ')')]",
+                        "AzureWebJobsStorage": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('storageAccountSecretResourceId'),'2019-08-01').secretUriWithVersion, ')')]",
+                        "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('storageAccountSecretResourceId'),'2019-08-01').secretUriWithVersion, ')')]",
                         "WEBSITE_CONTENTSHARE": "[tolower(variables('stopsFunctionAppName'))]"
                     }
                 }
