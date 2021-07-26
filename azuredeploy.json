@@ -105,7 +105,7 @@
         },
         {
             "type": "Microsoft.Web/serverfarms",
-            "apiVersion": "2016-09-01",
+            "apiVersion": "2020-02-02",
             "name": "[variables('stopsFunctionsWebFarmName')]",
             "location": "[parameters('location')]",
             "tags": "[variables('resourceTags')]",
@@ -259,7 +259,7 @@
             "resources": [
                 {
                     "type": "config",
-                    "apiVersion": "2016-08-01",
+                    "apiVersion": "2020-02-02",
                     "name": "web",
                     "dependsOn": [
                         "[resourceId('Microsoft.Web/Sites', variables('stopsFunctionAppName'))]"
