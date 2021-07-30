@@ -55,21 +55,21 @@
             "metadata": {
                "description": "The database name."
             }
-        }, 
-        "storageSku": {
+        },     
+        "storageSku":{
             "defaultValue": "Standard_LRS",
             "type": "string",
             "metadata": {
-                "description": "Azure storage SKU"
+               "description": "Azure storage SKU"
             }
         },
         "storageTier": {
             "defaultValue": "Standard",
             "type": "string",
             "metadata": {
-                "description": "Azure storage tier"
-            }
-        },
+               "description": "Azure storage tier"
+        }
+        }
     },
     "variables": {
         "projectName": "mad",
