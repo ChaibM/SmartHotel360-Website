@@ -55,7 +55,21 @@
             "metadata": {
                "description": "The database name."
             }
-        }
+        }, 
+        "storageSku": {
+            "defaultValue": "Standard_LRS",
+            "type": "string",
+            "metadata": {
+                "description": "Azure storage SKU"
+            }
+        },
+        "storageTier": {
+            "defaultValue": "Standard",
+            "type": "string",
+            "metadata": {
+                "description": "Azure storage tier"
+            }
+        },
     },
     "variables": {
         "projectName": "mad",
@@ -96,16 +110,18 @@
         {
             "type": "Microsoft.Storage/storageAccounts",
             "name": "[variables('stopsStorageAccountName')]",
-            "apiVersion": "2020-12-01",
+            "apiVersion": "2021-04-01",
             "location": "[parameters('location')]",
             "tags": "[variables('resourceTags')]",
-            "properties": {
-                "accountType": "Standard_LRS"
+            "kind":"BlobStorage",
+            "sku":{
+                    "name": "[parameters('storageSku')]",
+                    "tier": "[parameters('storageTier')]"
             }
         },
         {
             "type": "Microsoft.Web/serverfarms",
-            "apiVersion": "2020-02-02",
+            "apiVersion": "2016-09-01",
             "name": "[variables('stopsFunctionsWebFarmName')]",
             "location": "[parameters('location')]",
             "tags": "[variables('resourceTags')]",
@@ -227,8 +243,8 @@
             "properties": {
                 "accessPolicies": [
                     {
-                        "tenantId": "[reference(resourceId('Microsoft.Web/sites', variables('stopsFunctionAppName')), '2019-08-01', 'Full').identity.tenantId]",
-                        "objectId": "[reference(resourceId('Microsoft.Web/sites', variables('stopsFunctionAppName')), '2019-08-01', 'Full').identity.principalId]",
+                        "tenantId": "[reference(resourceId('Microsoft.Web/sites', variables('stopsFunctionAppName')), '2021-01-15', 'Full').identity.tenantId]",
+                        "objectId": "[reference(resourceId('Microsoft.Web/sites', variables('stopsFunctionAppName')), '2021-01-15', 'Full').identity.principalId]",
                         "permissions": {
                             "secrets": [
                                 "get",
@@ -259,7 +275,7 @@
             "resources": [
                 {
                     "type": "config",
-                    "apiVersion": "2020-02-02",
+                    "apiVersion": "2016-08-01",
                     "name": "web",
                     "dependsOn": [
                         "[resourceId('Microsoft.Web/Sites', variables('stopsFunctionAppName'))]"
