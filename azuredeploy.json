@@ -228,7 +228,7 @@
                         "[resourceId('Microsoft.Sql/servers', variables('sqlsrvName'))]"
                     ],
                     "properties": {
-                        "value": "[concat('Data Source=tcp:', reference(resourceId('Microsoft.Sql/servers/', variables('sqlsrvName'))).fullyQualifiedDomainName, ',1433;Initial Catalog=', parameters('databaseName'), ';User Id=', parameters('sqlsrvnameAdminLogin'), '@', reference(resourceId('Microsoft.Sql/servers/', variables('sqlsrvName'))).fullyQualifiedDomainName, ';Password=', parameters('sqlsrvnameAdminLoginPassword'), ';')]"
+                        "value": "[concat('Data Source=tcp:', reference(concat('Microsoft.Sql/servers/', variables('sqlsrvName'))).fullyQualifiedDomainName, ',1433;Initial Catalog=', parameters('databaseName'), ';User Id=', parameters('sqlsrvnameAdminLogin'), '@', reference(concat('Microsoft.Sql/servers/', variables('sqlsrvName'))).fullyQualifiedDomainName, ';Password=', parameters('sqlsrvnameAdminLoginPassword'), ';')]"
                     }
                 }
             ]
