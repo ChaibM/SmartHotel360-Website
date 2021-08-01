@@ -55,20 +55,20 @@
             "metadata": {
                "description": "The database name."
             }
-        },     
-        "storageSku":{
+        },
+        "storageSku": {
             "defaultValue": "Standard_LRS",
             "type": "string",
             "metadata": {
-               "description": "Azure storage SKU"
+                "description": "Azure storage SKU"
             }
         },
         "storageTier": {
             "defaultValue": "Standard",
             "type": "string",
             "metadata": {
-               "description": "Azure storage tier"
-        }
+                "description": "Azure storage tier"
+            }
         }
     },
     "variables": {
@@ -103,20 +103,25 @@
             "type": "Microsoft.Insights/components",
             "location": "[parameters('location')]",
             "tags": "[variables('resourceTags')]",
+            "kind": "web",
             "properties": {
+                "Application_Type": "web",
                 "applicationId": "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]"
             }
         },
         {
             "type": "Microsoft.Storage/storageAccounts",
             "name": "[variables('stopsStorageAccountName')]",
-            "apiVersion": "2021-04-01",
+            "apiVersion": "2021-02-01",
             "location": "[parameters('location')]",
             "tags": "[variables('resourceTags')]",
-            "kind":"BlobStorage",
-            "sku":{
-                    "name": "[parameters('storageSku')]",
-                    "tier": "[parameters('storageTier')]"
+            "kind": "BlobStorage",
+            "sku": {
+                "name": "[parameters('storageSku')]",
+                "tier": "[parameters('storageTier')]"
+            },
+            "properties":{
+                "accessTier": "Cool"
             }
         },
         {
@@ -215,7 +220,7 @@
                         "[resourceId('Microsoft.Storage/storageAccounts', variables('stopsStorageAccountName'))]"
                     ],
                     "properties": {
-                        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('stopsStorageAccountName'), ';AccountKey=', listKeys(variables('storageAccountResourceId'),'2020-12-01-preview').key1)]"
+                        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('stopsStorageAccountName'), ';AccountKey=', listKeys(variables('storageAccountResourceId'),'2021-02-01').keys[0].value)]"
                     }
                 },
                 {
