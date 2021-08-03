@@ -1,30 +1,63 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "subsidiary": {
-            "value":"mad"
-         },
-        "stopsFunctionAppName": {
-            "value": "stop"
-        },
-        "firstDeploy": {
-            "value": "false"
-        },
-        "sqlsrvnameAdminLogin": {
-            "value": "keolis-adm"
-        },
-        "sqlsrvnameAdminLoginPassword": {
-            "value": "Qwerty!1Qwerty!1"
-        },
-        "databaseName": {
-            "value": "MAD"
-        },
-        "env": {
-            "value": "d"
-        },
-        "location": {
-            "value": "West Europe"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "env": {
+      "value": "d"
+    },
+    "subsidiary": {
+      "value": "mad"
+    },
+    "subsidiaryManagementFunctionAppName": {
+      "value": "subsidiaryManagement"
+    },
+    "firstDeploy": {
+      "value": "true"
+    },
+    "location": {
+      "value": "West Europe"
+    },
+    "sqlsrvnameAdminLogin": {
+      "value": "keolis-adm"
+    },
+    "sqlsrvnameAdminLoginPassword": {
+      "value": "Qwerty!1Qwerty!1"
+    },
+    "databaseName": {
+      "value": "SubsidiaryName"
+    },
+    "identityServerUrl": {
+      "value": "IdentityServerUrl"
+    },
+    "pendingBookingCollectionName": {
+      "value": "pending booking collection name"
+    },
+    "manualServicesSchedulesCollectionName": {
+      "value": "manual services schedules collection name"
+    },
+    "unservedJobsCollectionName": {
+      "value": "unserved jobs collection name"
+    },
+    "failedOptimizationJobsCollectionName": {
+      "value": "failed optimization jobs collection name"
+    },
+    "bookingCollectionName": {
+      "value": "booking collection name"
+    },
+    "bookingNotificationCollectionName": {
+      "value": "booking notification collection name"
+    },
+    "serviceModificationQueueName": {
+      "value": "serviceModificationQueueName"
+    },
+    "projectName": {
+      "value": "MAD"
+    },
+    "reservationCollectionName": {
+      "value": "reservationCollectionName"
+    },
+    "bookingConfirmationQueueName": {
+      "value": "booking confirmation queue name"
     }
+  }
 }
