@@ -1,5 +1,5 @@
 {
-    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
   "parameters": {
     "env": {
@@ -10,7 +10,7 @@
       }
     },
     "firstDeploy": {
-      "defaultValue": "false",
+      "defaultValue": false,
       "type": "bool",
       "metadata": {
         "description": "The value indicating the first deploy to the resource group."
@@ -138,7 +138,21 @@
       "metadata": {
         "description": "The name of the booking confirmation queue for send notification."
       }
-    }
+    },
+        "storageSku": {
+            "defaultValue": "Standard_LRS",
+            "type": "string",
+            "metadata": {
+                "description": "Azure storage SKU"
+            }
+        },
+         "storageTier": {
+            "defaultValue": "Standard",
+            "type": "string",
+            "metadata": {
+                "description": "Azure storage tier"
+            }
+        }
   },
     "variables": {
         "projectName": "[toLower(parameters('projectName'))]",
@@ -168,28 +182,32 @@
 
         "keyVaultVersion": "2018-02-14",
         "sbVersion": "2017-04-01",
+        "functionAppApiVersion": "2020-12-01",
+        "microsoftInsightsApiVersion": "2020-02-02",
+        "microsoftSQLServerApiVersion": "2021-02-01-preview",
 
         "cosmosConnectionStringSecretName": "[concat('cosmosConnectionString', 'Secret')]",
-        "cosmosConnectionStringSecretResourceId": "[resourceId(resourceGroup().name, 'Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('cosmosConnectionStringSecretName'))]",
+        "cosmosConnectionStringSecretResourceId": "[concat('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('cosmosConnectionStringSecretName'))]",
         "cosmosDatabaseSecretKeySecretName": "[concat('cosmosDatabaseSecretKey', 'Secret')]",
         "serviceBusConnectionSecretName": "[concat('serviceBusConnection', 'Secret')]",
-        "serviceBusConnectionSecretResourceId": "[resourceId(resourceGroup().name, 'Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('serviceBusConnectionSecretName'))]",
+        "serviceBusConnectionSecretResourceId": "[concat('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('serviceBusConnectionSecretName'))]",
         "storageAccountSecretName": "[concat(parameters('subsidiaryManagementFunctionAppName'),'StorageAccountNameSecret')]",
         "dbConnectionStringSecretName": "[concat('dbConnectionSM','Secret')]",
         "storageAccountResourceId": "[resourceId('Microsoft.Storage/storageAccounts', variables('subsidiaryManagementStorageAccountName'))]",
-        "storageAccountSecretResourceId": "[resourceId(resourceGroup().name, 'Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('storageAccountSecretName'))]",
-        "dbConnectionStringSecretResourceId": "[resourceId(resourceGroup().name, 'Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('dbConnectionStringSecretName'))]",
-        "cosmosDatabaseSecretKeySecretResourceId": "[resourceId(resourceGroup().name, 'Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('cosmosDatabaseSecretKeySecretName'))]"
+        "storageAccountSecretResourceId": "[concat('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('storageAccountSecretName'))]",
+        "dbConnectionStringSecretResourceId": "[concat('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('dbConnectionStringSecretName'))]",
+        "cosmosDatabaseSecretKeySecretResourceId": "[concat('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('cosmosDatabaseSecretKeySecretName'))]"
     },
     "resources": [
         {
             "type": "Microsoft.Insights/components",
-            "apiVersion": "2014-04-01",
+            "apiVersion": "2020-02-02",
             "name": "[variables('applicationInsightsName')]",
             "location": "[parameters('location')]",
             "tags": "[variables('resourceTags')]",
             "properties": {
-                "applicationId": "[variables('applicationInsightsName')]"
+                "Application_Type": "web",
+                "applicationId": "[resourceId('Microsoft.Insights/components',variables('applicationInsightsName'))]"
             }
         },
         {
@@ -205,7 +223,7 @@
                     "name": "[parameters('serviceModificationQueueName')]",
                     "type": "Queues",
                     "dependsOn": [
-                        "[concat('Microsoft.ServiceBus/namespaces/', variables('serviceBusNamespaceName'))]"
+                        "[resourceId('Microsoft.ServiceBus/namespaces/', variables('serviceBusNamespaceName'))]"
                     ],
                     "properties": {},
                     "resources": []
@@ -214,12 +232,16 @@
         },
         {
             "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "2015-06-15",
+            "apiVersion": "2021-02-01",
             "name": "[variables('subsidiaryManagementStorageAccountName')]",
             "location": "[parameters('location')]",
             "tags": "[variables('resourceTags')]",
+            "kind": "Storage",
+            "sku": {
+                "name": "[parameters('storageSku')]",
+                "tier": "[parameters('storageTier')]"
+            },
             "properties": {
-                "accountType": "Standard_LRS"
             }
         },
         {
@@ -228,7 +250,6 @@
             "name": "[variables('subsidiaryManagementFunctionsWebFarmName')]",
             "location": "[parameters('location')]",
             "tags": "[variables('resourceTags')]",
-            "dependsOn": [],
             "sku": {
                 "name": "Y1",
                 "tier": "Dynamic",
@@ -247,10 +268,9 @@
         },
         {
             "type": "Microsoft.Sql/servers",
-            "apiVersion": "2014-04-01-preview",
+            "apiVersion": "[variables('microsoftSQLServerApiVersion')]",
             "name": "[variables('sqlsrvName')]",
             "location": "[parameters('location')]",
-            "dependsOn": [],
             "tags": "[variables('resourceTags')]",
             "properties": {
                 "administratorLogin": "[parameters('sqlsrvnameAdminLogin')]",
@@ -259,7 +279,7 @@
             "resources": [
                 {
                     "type": "firewallrules",
-                    "apiVersion": "2014-04-01-preview",
+                    "apiVersion": "[variables('microsoftSQLServerApiVersion')]",
                     "name": "AllowAllWindowsAzureIps",
                     "location": "[parameters('location')]",
                     "dependsOn": [
@@ -272,7 +292,7 @@
                 },
                 {
                     "type": "databases",
-                    "apiVersion": "2014-04-01-preview",
+                    "apiVersion": "2021-02-01-preview",
                     "name": "[parameters('databaseName')]",
                     "location": "[parameters('location')]",
                     "dependsOn": [
@@ -312,7 +332,7 @@
             "resources": [
                 {
                     "type": "secrets",
-                    "apiVersion": "[variables('keyVaultVersion')]",
+                    "apiVersion": "2019-09-01",
                     "name": "[variables('storageAccountSecretName')]",
                     "location": "[parameters('location')]",
                     "dependsOn": [
@@ -325,7 +345,7 @@
                 },
                 {
                     "type": "secrets",
-                    "apiVersion": "[variables('keyVaultVersion')]",
+                    "apiVersion": "2019-09-01",
                     "name": "[variables('cosmosConnectionStringSecretName')]",
                     "location": "[parameters('location')]",
                     "dependsOn": [
@@ -338,7 +358,7 @@
                 },
                 {
                     "type": "secrets",
-                    "apiVersion": "[variables('keyVaultVersion')]",
+                    "apiVersion": "2019-09-01",
                     "name": "[variables('cosmosDatabaseSecretKeySecretName')]",
                     "location": "[parameters('location')]",
                     "dependsOn": [
@@ -351,7 +371,7 @@
                 },
                 {
                     "type": "secrets",
-                    "apiVersion": "[variables('keyVaultVersion')]",
+                    "apiVersion": "2019-09-01",
                     "name": "[variables('dbConnectionStringSecretName')]",
                     "location": "[parameters('location')]",
                     "dependsOn": [
@@ -359,12 +379,12 @@
                         "[resourceId('Microsoft.Sql/servers', variables('sqlsrvName'))]"
                     ],
                     "properties": {
-                        "value": "[concat('Data Source=tcp:', reference(concat('Microsoft.Sql/servers/', variables('sqlsrvName'))).fullyQualifiedDomainName, ',1433;Initial Catalog=', parameters('databaseName'), ';User Id=', parameters('sqlsrvnameAdminLogin'), '@', reference(concat('Microsoft.Sql/servers/', variables('sqlsrvName'))).fullyQualifiedDomainName, ';Password=', parameters('sqlsrvnameAdminLoginPassword'), ';')]"
+                        "value": "[concat('Data Source=tcp:', reference(resourceId('Microsoft.Sql/servers/', variables('sqlsrvName'))).fullyQualifiedDomainName, ',1433;Initial Catalog=', parameters('databaseName'), ';User Id=', parameters('sqlsrvnameAdminLogin'), '@', reference(resourceId('Microsoft.Sql/servers/', variables('sqlsrvName'))).fullyQualifiedDomainName, ';Password=', parameters('sqlsrvnameAdminLoginPassword'), ';')]"
                     }
                 },
                 {
                     "type": "secrets",
-                    "apiVersion": "[variables('keyVaultVersion')]",
+                    "apiVersion": "2019-09-01",
                     "name": "[variables('serviceBusConnectionSecretName')]",
                     "location": "[parameters('location')]",
                     "dependsOn": [
@@ -372,7 +392,7 @@
                         "[resourceId('Microsoft.ServiceBus/namespaces', variables('serviceBusNamespaceName'))]"
                     ],
                     "properties": {
-                        "value": "[listKeys(resourceId(concat('Microsoft.ServiceBus/namespaces/AuthorizationRules'),variables('serviceBusNamespaceName'),'RootManageSharedAccessKey'),variables('sbVersion')).primaryConnectionString]"
+                        "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/AuthorizationRules',variables('serviceBusNamespaceName'),'RootManageSharedAccessKey'),variables('sbVersion')).primaryConnectionString]"
                     }
                 }
 
@@ -388,8 +408,8 @@
             "properties": {
                 "accessPolicies": [
                     {
-                        "tenantId": "[reference(resourceId('Microsoft.Web/sites', variables('subsidiaryManagementFunctionAppName')), '2018-11-01', 'Full').identity.tenantId]",
-                        "objectId": "[reference(resourceId('Microsoft.Web/sites', variables('subsidiaryManagementFunctionAppName')), '2018-11-01', 'Full').identity.principalId]",
+                        "tenantId": "[reference(resourceId('Microsoft.Web/sites', variables('subsidiaryManagementFunctionAppName')), variables('functionAppApiVersion'), 'Full').identity.tenantId]",
+                        "objectId": "[reference(resourceId('Microsoft.Web/sites', variables('subsidiaryManagementFunctionAppName')), variables('functionAppApiVersion'), 'Full').identity.principalId]",
                         "permissions": {
                             "secrets": [
                                 "get",
@@ -402,7 +422,7 @@
         },
         {
             "type": "Microsoft.Web/sites",
-            "apiVersion": "2016-08-01",
+            "apiVersion": "[variables('functionAppApiVersion')]",
             "name": "[variables('subsidiaryManagementFunctionAppName')]",
             "location": "[parameters('location')]",
             "tags": "[variables('resourceTags')]",
@@ -420,7 +440,7 @@
             "resources": [
                 {
                     "type": "config",
-                    "apiVersion": "2015-08-01",
+                    "apiVersion": "2020-06-01",
                     "name": "web",
                     "dependsOn": [
                         "[resourceId('Microsoft.Web/Sites', variables('subsidiaryManagementFunctionAppName'))]"
@@ -431,7 +451,7 @@
                 },
                 {
                     "type": "config",
-                    "apiVersion": "2015-08-01",
+                    "apiVersion": "2020-06-01",
                     "name": "appsettings",
                     "dependsOn": [
                         "[resourceId('Microsoft.Web/sites', variables('subsidiaryManagementFunctionAppName'))]",
@@ -459,7 +479,7 @@
                     "BookingCollectionName": "[parameters('bookingCollectionName')]",
                     "BookingNotificationCollectionName": "[parameters('bookingNotificationCollectionName')]",
                     "PendingBookingCollectionName": "[parameters('pendingBookingCollectionName')]",
-                    "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('microsoft.insights/components/', variables('applicationInsightsName')), '2015-05-01').InstrumentationKey]",
+                    "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('microsoft.insights/components/', variables('applicationInsightsName')), variables('microsoftInsightsApiVersion')).InstrumentationKey]",
                     "AzureWebJobsDashboard": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('storageAccountSecretResourceId'),'2015-06-01').secretUriWithVersion, ')')]",
                     "AzureWebJobsStorage": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('storageAccountSecretResourceId'),'2015-06-01').secretUriWithVersion, ')')]",
                     "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('storageAccountSecretResourceId'),'2015-06-01').secretUriWithVersion, ')')]",
@@ -494,6 +514,9 @@
             "properties": {
                 "resource": {
                     "id": "[variables('cosmosDatabaseName')]"
+                },
+                "options": {
+                    "throughput": 10000
                 }
             }
         },
