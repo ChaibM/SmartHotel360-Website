@@ -18,7 +18,7 @@ variables:
 steps:
 - powershell: |
    
-   $url ="http://validator.swagger.io/validator?url={$(System.DefaultWorkingDirectory)/azuredeploy.json}"
+   $url ="http://validator.swagger.io/validator?url={$(System.DefaultWorkingDirectory)/OAS Keolis.Driver (2).yaml}"
    
    (curl $url).RawContentLength 
 - task: RunARMTTKTests@1
