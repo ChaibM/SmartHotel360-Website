@@ -16,7 +16,11 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-
+- powershell: |
+   
+   $url ="http://validator.swagger.io/validator?url={$(System.DefaultWorkingDirectory)/azuredeploy.json}"
+   
+   (curl $url).RawContentLength 
 - task: RunARMTTKTests@1
   inputs:
     templatelocation: '$(System.DefaultWorkingDirectory)/azuredeploy.json'
