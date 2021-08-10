@@ -1,0 +1,439 @@
+openapi: 3.0.0
+info:
+  description: This specification describes a set of http-triggered Azure functions, that allows operations with the service schedule and related instances.
+  version: "1.0.0"
+  title: Interface for Keolis.Driver solution
+  contact:
+    email: oleksii.kuzmin@viseo.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: Services
+    description: Operations with the service
+paths:
+  /services/{registrationNumber}/{serviceDate}:
+    get:
+      tags:
+      - Services
+      summary: Searches the service vehicle.
+      parameters:
+      - $ref: '#/components/parameters/AuthParam'
+      - $ref: '#/components/parameters/OcpApimSubscriptionKey'
+      - name: registrationNumber
+        in: path
+        description: The vehicle registration number.
+        required: true  
+        schema:
+          type: string
+      - name: serviceDate
+        in: path
+        description: The service date.
+        required: true  
+        schema:
+          ref: '#/components/parameters/ServiceDate'
+      responses:
+        '200':
+          description: A JSON array with vehicle services.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VehicleServiceModel'
+        '401':
+          $ref: '#/components/responses/401'  
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+  /services/{vehicleServiceId}/schedule:
+     get:
+      tags:
+      - Services
+      summary: Gets the run.
+      parameters:
+      - $ref: '#/components/parameters/AuthParam'
+      - $ref: '#/components/parameters/OcpApimSubscriptionKey'
+      - name: vehicleServiceId
+        in: path
+        required: true 
+        description: The service identifier.
+        schema:
+          $ref: '#/components/schemas/VehicleServiceIdComponent'
+        responses:
+        '200':
+          description: A JSON array with vehicle services.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleVehicleModel'
+        '204':
+          $ref: '#/components/responses/204'
+        '401':
+          $ref: '#/components/responses/401'  
+        '403':
+          $ref: '#/components/responses/403'
+        '500':
+          $ref: '#/components/responses/500'  
+  /services/{vehicleServiceId}/result:
+    post:
+      tags:
+      - Services
+      summary: Sets the results of a trip.
+      parameters:
+      - $ref: '#/components/parameters/AuthParam'
+      - $ref: '#/components/parameters/OcpApimSubscriptionKey'
+      - name: vehicleServiceId
+        in: path
+        required: true 
+        description: The service identifier.
+        schema:
+          $ref: '#/components/schemas/VehicleServiceIdComponent'
+      requestBody:
+        $ref: '#/components/requestBodies/requestServiceResults'
+      responses:
+        '200':
+          description: OK.
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '500':
+          $ref: '#/components/responses/500'
+  /services/{vehicleServiceId}/fullScheduleCsv:
+    get:
+      tags:
+      - Services CSV
+      summary: Gets the complete schedule of a service in CSV format.
+      parameters:
+      - $ref: '#/components/parameters/AuthParam'
+      - $ref: '#/components/parameters/OcpApimSubscriptionKey'
+      - name: vehicleServiceId
+        in: path
+        required: true 
+        description: The service identifier.
+        schema:
+          $ref: '#/components/schemas/VehicleServiceIdComponent'
+      responses:
+        '200':
+          description: A model containing all the necessary information to obtain the Schedule CSV file.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceScheduleCsvModel'
+        '401':
+          $ref: '#/components/responses/401'  
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+components:
+  parameters:
+    OcpApimSubscriptionKey:
+        name: Ocp-Apim-Subscription-Key
+        in: header
+        required: true
+        description: An access token.
+        schema:
+          type: string
+          description: The access token.
+          example: "a3c7814fgt4048dea34147bcer38d901"
+    AuthParam:
+      name: Authorization
+      in: header
+      required: true
+      description: An access token.
+      schema:
+        type: string
+        description: The access token.
+        example: "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkZHbkUtbGJ0NVF3aHE2N0xDcl8zOGciLCJ0eXAiOiJKV1QifQ.eyJuYmYiOjE1OTA2Nzk4ODcsImV4cCI6MTU5MDY4MzQ4NywiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSIsImF1ZCI6WyJodHRwczovL2xvY2FsaG9zdDo1MDAxL3Jlc291cmNlcyIsImtlb2xpcy5ib29raW5nIiwia2VvbGlzLnVzZXJtYW5hZ2VtZW50Il0sImNsaWVudF9pZCI6InNlcnZpY2VwcmluY2lwYWwiLCJzY29wZSI6WyJrZW9saXMuYm9va2luZyIsImtlb2xpcy51c2VybWFuYWdlbWVudCJdfQ.qNp3RZwmFv4IGs5PY1tlWfuQJXh_twQi29g0h9KUGqD_FCo5yjCauo60XwJW5G83lwjUy4Q5g9Zpw-ldNfRFDqpwfQDPfvtSiwfzXykG_mQze6Mry7fsy0E-uEwTmj63xLWB-CfYmOAx4RX7VUgcab4yS5yohQMf2iiUvQz85iX4AYYfrCQY5Ae0AYh3tbxvMqTZ5eZ3OdXWReUOqLqIpLymYZOnXT4xzSCdPEP78zS_4VjB-3bK_WWVYzLz3bYwNer77kyoUue4sIVYwiiD3fZyFAhZmAVPiCV5buyrJHlxCONK6u0Ud9iCeTpyAYw9lu_kBAk_ugYKW4B83gPBJw"
+  schemas:
+    VehicleServiceIdComponent:
+      type: string
+      format: guid
+      example: "aba8571e-b8a6-4066-a75b-73b68d22acf4"
+    ServiceScheduleCsvModel:
+      type: object
+      properties:
+        fileSasUri:
+          type: string
+          description: The CSV file SAS URI
+          example: "https://dmaddatalakeblancheaz5ql.dfs.core.windows.net/blanche/2021/3/18/Schedule/Schedule_2021-03-29_ttt_IIEHHE.csv?sv=2020-04-08&se=2021-03-18T11%3A57%3A04Z&sr=b&sp=r&sig=7BTO8OezSM0%2F4%2FHvHhCXdHwawnyITBrvRpY2E5PwDvk%3D"
+        fileName:
+          type: string
+          description: The CSV filename in the format Schedule_<date>_<serviceLabel>_<vehiclePlate>
+          example: "Schedule_2021-03-29_ttt_IIEHHE.csv"
+        fileUriTimeoutMinutes: 
+          type: string
+          description: The SAS URI timeout (in minutes)
+          example: "5"
+    VehicleServiceModel:
+      type: object
+      properties:
+        vehicleServiceId:
+          $ref: '#/components/schemas/VehicleServiceIdComponent'
+        vehicleServiceLabel:
+          type: string
+          description: desired date
+          example: "S1"
+        vehicleServiceDate:
+          type: string
+          format: date
+          description: date of service
+          example: "2019-11-12"
+        serviceType:
+          type: string
+          example: "TPMR"
+          enum: [ "TAD", "TPMR" ]
+          description: search type
+            * 'TAD' - the TAD service
+            * 'TPMR' - the TPMR service
+        startServiceTime:
+          type: string
+          format: time
+          description: time of start vehicle service
+          example: "10:00"
+        endServiceTime:
+          type: string
+          format: time
+          description: time of end service
+          example: "12:00"
+        takeUpServiceTime:
+          type: integer
+          format: time
+          description: take up service minutes 
+          example: 15
+        takeDownServiceTime:
+          type: integer
+          format: time
+          description: take down service minutes 
+          example: 15
+        vehicleModel:
+          type: string
+          example: "Kangoo"
+        registrationNumber:
+          type: string
+          example: "AM-09-0Z-[0]"
+    Pause:
+      type: object
+      properties:
+        pauseType:
+          type: string
+          example: "Fixed"
+          enum: ["Fixed", "Floating"]
+        pauseEarliestStartTime:
+          type: string
+          format: time
+          example: "12:00"
+        pauseLatestStartTime:
+          type: string
+          format: time
+          example: "12:00"
+        pauseDuration:
+          type: integer
+          example: 45
+        pauseLocation:
+          $ref: '#/components/schemas/Location'
+    ScheduleVehicleModel:
+      type: object
+      properties:
+        vehicleService:
+          $ref: '#/components/schemas/VehicleServiceModel'
+        schedule:
+          $ref: '#/components/schemas/Schedule'
+    Schedule:
+      type: object
+      properties:
+        startTime:
+          type: string
+          format: datetime
+          example: "10:00"
+        endTime:
+          type: string
+          format: datetime
+          example: "12:00"
+        startLocation:
+          $ref: '#/components/schemas/Location'
+        endLocation:
+          $ref: '#/components/schemas/Location'
+        pause:
+          $ref: '#/components/schemas/Pause'
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Job'
+        vehicleConfiguration:
+          type: string
+          example: "PA:2,FR:1,GR:1"
+    Location:
+      type: object
+      properties:
+        label:
+          type: string
+          example: "Location label"
+        locationType:
+          type: string
+          example: "Address"
+          enum: ["Depot", "Address"]
+        address:
+          type: string
+          example: "35 boulevard Ornano"
+        latitude:
+          type: string
+          example: "5.3434"
+        longitude:
+          type: string
+          example: "10.3034"
+    Job:
+      type: object
+      properties:
+        clientId:
+          $ref: '#/components/schemas/ClientIdComponent'
+        bookingId:
+          $ref: '#/components/schemas/BookingIdComponent'
+        jobType:
+          $ref: '#/components/schemas/JobTypeComponent'
+        location:
+          $ref: '#/components/schemas/Location'
+        pickupTime:
+          $ref: '#/components/schemas/PickupTimeTimeComponent'
+        dropoffTime:
+          $ref: '#/components/schemas/DropoffTimeComponent'
+        boardingDuration:
+          type: integer
+          format: minutes
+          example: 4
+    DropoffTimeComponent:
+          type: string
+          format: time
+          example: "10:12"
+    PickupTimeTimeComponent:
+          type: string
+          format: time
+          example: "10:00"
+    JobResult:
+      type: object
+      properties:
+        clientId:
+          $ref: '#/components/schemas/ClientIdComponent'
+        bookingId:
+          $ref: '#/components/schemas/BookingIdComponent'
+        tripStatus:
+          type: string
+          example: "Сompleted"
+          enum: ["Сompleted", "NotAppeared"]
+        pickupTime:
+          $ref: '#/components/schemas/PickupTimeTimeComponent'
+        dropoffTime:
+          $ref: '#/components/schemas/DropoffTimeComponent'
+    JobTypeComponent:
+      type: string
+      example: "PickUp"
+      description: The type of the job.
+      enum: ["Pickup", "Dropoff"]
+    ErrorModel:
+      type: object
+      properties:
+        errorMessage:
+          type: string
+          description: The message to clarify the recieved error.
+          example: "The error description."
+        model:
+          type: object
+          description: The object with details of the recieved error.
+          example: null
+    ClientIdComponent:
+      type: string
+      format: guid
+      description: The client id.
+      example: "aba8571e-b8a6-4066-a75b-73b68d22acf4"
+    BookingIdComponent:
+      type: string
+      format: guid
+      description: The client id.
+      example: "aba8571e-b8a6-4066-a75b-73b68d22acf4"
+    ServiceDate:
+      type: string
+      format: date
+      description: desired service date
+      example: '2020-01-01'
+  requestBodies:
+    requestServiceResults:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - startTime
+            - endTime
+            - jobs
+            properties:
+              startTime:
+                type: string
+                format: time
+                example: "12:15"
+              endTime:
+                type: string
+                format: time
+                example: "13:10"
+              jobs:
+                type: array
+                items:
+                  $ref: '#/components/schemas/JobResult'
+              mileageStart:
+                type: number
+                format: int
+                example: 123
+              mileageEnd:
+                type: number
+                format: int
+                example: 186  
+  responses:
+    400:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorModel'
+    204:
+      description: No content.
+    401:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorModel'
+    403:
+      description: The user hasn't enough permission to perform the operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorModel'
+    404:
+      description: The object wasn't found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorModel'
+    409:
+      description: Conflict.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorModel'
+    500:
+      description: An internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorModel'
