@@ -8,9 +8,11 @@
       "metadata": {
         "description": "The environment preffix for ressources."
       }
+      
     },
     "firstDeploy": {
       "defaultValue": false,
+      
       "type": "bool",
       "metadata": {
         "description": "The value indicating the first deploy to the resource group."
@@ -410,7 +412,7 @@
             "[resourceId('Microsoft.EventHub/namespaces/eventHubs', variables('eventHubNamespaceName'), variables('eventHubName'))]"
           ],
           "properties": {
-            "value": "[listkeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('eventHubNamespaceName'), 'RootManageSharedAccessKey'), '2021-01-01-preview').primaryConnectionString]"
+            "value": "[listkeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('eventHubNamespaceName'), 'RootManageSharedAccessKey'), '2017-04-01').primaryConnectionString]"
           }
         },
         {
