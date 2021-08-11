@@ -250,7 +250,7 @@
       }
     },
     {
-      "apiVersion": "2017-04-01",
+      "apiVersion": "[variables('sbVersion')]",
       "type": "Microsoft.EventHub/namespaces",
       "name": "[variables('eventHubNamespaceName')]",
       "location": "[parameters('location')]",
@@ -267,7 +267,7 @@
       "resources": [
         {
           "type": "authorizationRules",
-          "apiVersion": "2017-04-01",
+          "apiVersion": "[variables('sbVersion')]",
           "name": "SendOnly",
           "dependsOn": [
             "[variables('eventHubNamespaceName')]"
@@ -281,7 +281,7 @@
       ]
     },
     {
-      "apiVersion": "2017-04-01",
+      "apiVersion": "[variables('sbVersion')]",
       "type": "Microsoft.EventHub/namespaces/eventhubs",
       "name": "[concat(variables('eventHubNamespaceName'), '/', variables('eventHubName'))]",
       "location": "[parameters('location')]",
@@ -316,7 +316,7 @@
           }
         },
         {
-          "apiVersion": "2021-01-01-preview",
+          "apiVersion": "[variables('sbVersion')]",
           "name": "[parameters('jobValidationQueueName')]",
           "type": "Queues",
           "dependsOn": [
@@ -412,7 +412,7 @@
             "[resourceId('Microsoft.EventHub/namespaces/eventHubs', variables('eventHubNamespaceName'), variables('eventHubName'))]"
           ],
           "properties": {
-            "value": "[listkeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('eventHubNamespaceName'), 'RootManageSharedAccessKey'), '2017-04-01').primaryConnectionString]"
+            "value": "[listkeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('eventHubNamespaceName'), 'RootManageSharedAccessKey'), variables('sbVersion')).primaryConnectionString]"
           }
         },
         {
