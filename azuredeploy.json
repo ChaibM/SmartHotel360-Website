@@ -209,7 +209,7 @@
         "isZoneRedundant": false
       }
     ],
-    "sbVersion": "2017-04-01",
+    "sbVersion": "2021-01-01-preview",
     "keyVaultVersion": "2018-02-14",
     "functionAppApiVersion": "2020-12-01",
     "microsoftInsightsApiVersion": "2020-02-02",
