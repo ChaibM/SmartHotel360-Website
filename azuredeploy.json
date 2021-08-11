@@ -248,7 +248,7 @@
       }
     },
     {
-      "apiVersion": "[variables('sbVersion')]",
+      "apiVersion": "2017-04-01",
       "type": "Microsoft.EventHub/namespaces",
       "name": "[variables('eventHubNamespaceName')]",
       "location": "[parameters('location')]",
@@ -265,7 +265,7 @@
       "resources": [
         {
           "type": "authorizationRules",
-          "apiVersion": "[variables('sbVersion')]",
+          "apiVersion": "2017-04-01",
           "name": "SendOnly",
           "dependsOn": [
             "[variables('eventHubNamespaceName')]"
@@ -279,7 +279,7 @@
       ]
     },
     {
-      "apiVersion": "[variables('sbVersion')]",
+      "apiVersion": "2017-04-01",
       "type": "Microsoft.EventHub/namespaces/eventhubs",
       "name": "[concat(variables('eventHubNamespaceName'), '/', variables('eventHubName'))]",
       "location": "[parameters('location')]",
