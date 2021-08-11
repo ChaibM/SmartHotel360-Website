@@ -16,14 +16,6 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- powershell: |
-   
-   $url ="http://validator.swagger.io/validator?url={$(System.DefaultWorkingDirectory)/OAS Keolis.Driver (2).yaml}"
-   
-   (curl $url).RawContentLength 
-
-- powershell: |
-    Add-Content -Path "$(System.DefaultWorkingDirectory)/testhtml.html" -Value "<img src='http://validator.swagger.io/validator?url={$(System.DefaultWorkingDirectory)/OAS Keolis.Driver (2).yaml}'>"
 
 - task: RunARMTTKTests@1
   inputs:
