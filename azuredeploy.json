@@ -48,10 +48,31 @@
             }
         },
         "functionAppName": {
-            "defaultValue": "driver",
+            "defaultValue": "notification",
             "type": "string",
             "metadata": {
                 "description": "The name of the function app to create."
+            }
+        },
+        "userNotificationCollectionId": {
+            "defaultValue": "collectionId",
+            "type": "string",
+            "metadata": {
+                "description": "The id of the collection with the notifications."
+            }
+        },
+        "cosmosConnectionString": {
+            "defaultValue": "connection string",
+            "type": "string",
+            "metadata": {
+                "description": "The connection string to Cosmos database."
+            }
+        },
+        "databaseSecretKey": {
+            "defaultValue": "secret key",
+            "type": "string",
+            "metadata": {
+                "description": "The database secret key."
             }
         },
         "databaseName": {
@@ -61,197 +82,485 @@
                 "description": "The Cosmos database with users."
             }
         },
-        "sqlsrvnameAdminLogin": {
-            "minLength": 1,
-            "type": "String"
-        },
-        "sqlsrvnameAdminLoginPassword": {
-            "type": "SecureString"
-        },
-        "serviceBusQueuePath": {
-            "defaultValue": "serviceBusQueuePath",
-            "type": "String",
-            "metadata": {
-                "description": "The prefix for service bus queue."
-            }
-        },
-        "subsidiaryManagementDatabaseName": {
-            "defaultValue": "MAD",
-            "type": "String",
-            "metadata": {
-                "description": "The SQL database name."
-            }
-        },
-        "bookingCollectionName": {
-            "defaultValue": "some string",
+        "serviceBusEmailQueueName": {
+            "defaultValue": "emails",
             "type": "string",
             "metadata": {
-                "description": "The name of booking collection in Cosmos DB."
+                "description": "The name of the email's queue to create."
             }
         },
-        "servicesSchedulesCollectionName": {
-            "defaultValue": "some string",
+        "serviceBusSmsQueueName": {
+            "defaultValue": "sms",
             "type": "string",
             "metadata": {
-                "description": "The name of services schedules collection in Cosmos DB."
+                "description": "The name of the sms's queue to create."
             }
         },
-        "manualServicesSchedulesCollectionName": {
-            "defaultValue": "some string",
+        "serviceBusNotifQueueName": {
+            "defaultValue": "push-notifications",
             "type": "string",
             "metadata": {
-                "description": "The name of manual services schedules collection in Cosmos DB."
+                "description": "The name of the mobile notification's queue to create."
             }
         },
-        "userServiceBaseAddress": {
-            "defaultValue": "some string",
+        "sendGridFrom": {
+            "defaultValue": "someValue",
             "type": "string",
             "metadata": {
-                "description": "The endpoint of the user service api."
+                "description": "SendGrid mail from field."
             }
         },
-        "identityServerUrl": {
-            "defaultValue": "identityServerUrl",
+        "sendGridFromEmail": {
+            "defaultValue": "sendGridFromEmail",
             "type": "string",
             "metadata": {
-                "description": "IdentityServer URL."
+                "description": "SendGrid From Email."
             }
         },
-        "throughput": {
+        "sendGridToEmail": {
+            "defaultValue": "sendGridToEmail",
+            "type": "string",
+            "metadata": {
+                "description": "The SendGrid To email."
+            }
+        },
+        "sendGridAccountConfirmationTemplateId": {
+            "defaultValue": "sendGridAccountConfirmationTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "The id of SendGrid template for an account confirmation."
+            }
+        },
+        "sendGridAccountActivationTemplateId": {
+            "defaultValue": "sendGridAccountActivationTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "The id of SendGrid template for an account activation."
+            }
+        },
+        "sendGridEmailModificationConfirmationTemplateId": {
+            "defaultValue": "sendGridEmailModificationConfirmationTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "The id of SendGrid template for an email modification confirmation."
+            }
+        },
+        "sendGridClaimTemplateId": {
+            "defaultValue": "sendGridClaimTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "The id of SendGrid template for claim."
+            }
+        },
+        "sendGridPersonalInfoModificationTemplateId": {
+            "defaultValue": "sendGridPersonalInfoModificationTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "The id of SendGrid template for personal info modification."
+            }
+        },
+        "sendGridTpmrSubscriptionConfirmationTemplateId": {
+            "defaultValue": "sendGridTpmrSubscriptionConfirmationTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "The id of SendGrid template for TPMR subscription confirmation."
+            }
+        },
+        "sendGridTpmrClientSubscriptionTemplateId": {
+            "defaultValue": "sendGridTpmrClientSubscriptionTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "The id of SendGrid template for TPMR client subscription."
+            }
+        },
+        "sendGridPasswordChangedTemplateId": {
+            "defaultValue": "sendGridPasswordChangedTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "The id of SendGrid template for a password changed email."
+            }
+        },
+        "sendGridResetPasswordTemplateId": {
+            "defaultValue": "sendGridResetPasswordTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "The id of SendGrid template for a reset password."
+            }
+        },
+        "sendGridPasswordWasResetTemplateId": {
+            "defaultValue": "sendGridPasswordWasResetTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "The id of SendGrid template for a password was reset."
+            }
+        },
+        "sendGridNewTpmrDemandTemplateId": {
+            "defaultValue": "sendGridNewTpmrDemandTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "The id of SendGrid template for a new TPMR demand."
+            }
+        },
+        "sendGridOneWayDemandTemplateId": {
+            "defaultValue": "sendGridOneWayDemandTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "The id of SendGrid template for a one way demand."
+            }
+        },
+        "sendGridRoundTripDemandTemplateId": {
+            "defaultValue": "sendGridRoundTripDemandTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "The id of SendGrid template for a round trip demand."
+            }
+        },
+        "sendGridMultiDestinationDemandTemplateId": {
+            "defaultValue": "sendGridMultiDestinationDemandTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "The id of SendGrid template for a multi-destination demand."
+            }
+        },
+        "sendGridDemandConfirmationTemplateId": {
+            "defaultValue": "sendGridDemandConfirmationTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "The id of SendGrid template for a demand confirmation."
+            }
+        },
+        "sendGridContactTourismTemplateId": {
+            "defaultValue": "sendGridContactTourismTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "The id of SendGrid template for a tourism contact."
+            }
+        },
+        "sendGridApplicationNoticeTemplateId": {
+            "defaultValue": "sendGridApplicationNoticeTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "The id of SendGrid template for an application notice."
+            }
+        },
+        "sendGridLostObjectTemplateId": {
+            "defaultValue": "sendGridLostObjectTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "The id of SendGrid template for a lost object email."
+            }
+        },
+        "sendGridInfoRequestTemplateId": {
+            "defaultValue": "sendGridInfoRequestTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "The id of SendGrid template for an info request email."
+            }
+        },
+        "milleMercisUseMultipleMessage": {
+            "defaultValue": "milleMercisUseMultipleMessage",
+            "type": "bool",
+            "metadata": {
+                "description": "milleMercisUseMultipleMessage."
+            }
+        },
+        "milleMercisPrioritySpecified": {
+            "defaultValue": "milleMercisPrioritySpecified",
+            "type": "bool",
+            "metadata": {
+                "description": "milleMercisPrioritySpecified."
+            }
+        },
+        "milleMercisPriority": {
+            "defaultValue": "milleMercisPriority",
             "type": "int",
-            "defaultValue": 400,
-            "minValue": 400,
-            "maxValue": 1000000,
             "metadata": {
-                "description": "The throughput for the container"
+                "description": "milleMercisPriority."
             }
         },
-        "sla": {
-            "type": "string",
-            "defaultValue": "sla",
+        "milleMercisReceiveAR": {
+            "defaultValue": "milleMercisReceiveAR",
+            "type": "bool",
             "metadata": {
-                "description": "The SLA parameter."
+                "description": "milleMercisReceiveAR."
             }
         },
-        "serviceModificationQueueName": {
-            "type": "string",
-            "defaultValue": "serviceModificationQueueName",
+        "milleMercisDestinationType": {
+            "defaultValue": "milleMercisDestinationType",
+            "type": "int",
             "metadata": {
-                "description": "The name for queue with service modifications."
+                "description": "milleMercisDestinationType."
             }
         },
-        "jobResultFileName": {
+        "milleMercisFrom": {
+            "defaultValue": "milleMercisFrom",
             "type": "string",
             "metadata": {
-                "description": "The name for the job result file."
+                "description": "milleMercisFrom."
             }
         },
-        "sasUriMinutesActive": {
+        "milleMercisPassword": {
+            "defaultValue": "milleMercisPassword",
             "type": "string",
             "metadata": {
-                "description": "The timeout before the SAS URI becomes unavailable (in minutes)."
+                "description": "milleMercisPassword."
             }
         },
-        "WEBSITE_TIME_ZONE": {
-            "defaultValue": "Website_time_zone",
+        "milleMercisLogin": {
+            "defaultValue": "milleMercisLogin",
             "type": "string",
             "metadata": {
-                "description": "Timezone to use."
+                "description": "milleMercisLogin."
             }
         },
-        "jobValidationQueueName": {
-            "type": "string",
-            "defaultValue": "jobValidationQueueName",
-            "metadata": {
-                "description": "The name for queue with job validation messages."
-            }
-        },
-        "tarotServiceUrl": {
-            "defaultValue": "some string",
+        "milleMercisAppId": {
+            "defaultValue": "milleMercisAppId",
             "type": "string",
             "metadata": {
-                "description": "Tarot service url."
+                "description": "milleMercisAppId."
             }
         },
-        "azureAdBaseUrl": {
-            "defaultValue": "some string",
+        "sendGridKey": {
+            "defaultValue": "sendGridKey",
             "type": "string",
             "metadata": {
-                "description": "Azure AD base url."
+                "description": "The SendGrid key."
             }
         },
-        "azureAdClientSecret": {
-            "defaultValue": "AzureAdClientSecret",
+        "sendGridContactTemplateId": {
+            "defaultValue": "sendGridContactTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "SendGrid Contact template id."
+            }
+        },
+        "sendGridClaimTourismTemplateId": {
+            "defaultValue": "sendGridClaimTourismTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "SendGrid claim template id for Tourism portal."
+            }
+        },
+        "sendGridReinsuranceDayBeforeTemplateId": {
+            "defaultValue": "sendGridReinsuranceDayBeforeTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "The SendGrid reinsurance day before template id."
+            }
+        },
+        "sendGridReinsuranceFirstTemplateId": {
+            "defaultValue": "sendGridReinsuranceFirstTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "SendGrid reinsurance first template id."
+            }
+        },
+        "sendGridReinsuranceSecondTemplateId": {
+            "defaultValue": "sendGridReinsuranceSecondTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "SendGrid reinsurance second template id."
+            }
+        },
+        "sendGridTrapezeAgentAccountCreationTemplateId": {
+            "defaultValue": "sendGridTrapezeAgentAccountCreationTemplateId",
+            "type": "string",
+            "metadata": {
+                "description": "SendGrid trapeze agent account creation template id."
+            }
+        },
+        "identityServerUrl" : {
+            "defaultValue":"identityServerUrl",
+            "type":"string",
+            "metadata":{
+                "description":"IdentityServer URL."
+            }
+        },
+        "actionGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "Unique name (within the Resource Group) for the Action group."
+            }
+        },
+        "actionGroupShortName": {
+            "type": "string",
+            "metadata": {
+                "description": "Short name (maximum 12 characters) for the Action group."
+            }
+        },
+        "alertName": {
+            "type": "string",
+            "minLength": 1,
+            "metadata": {
+                "description": "Name of the alert"
+            }
+        },
+        "alertDescription": {
+            "type": "string",
+            "defaultValue": "This is a metric alert",
+            "metadata": {
+                "description": "Description of alert"
+            }
+        },
+        "alertSeverity": {
+            "type": "int",
+            "defaultValue": 3,
+            "allowedValues": [
+                0,
+                1,
+                2,
+                3,
+                4
+            ],
+            "metadata": {
+                "description": "Severity of alert {0,1,2,3,4}"
+            }
+        },
+        "isEnabled": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Specifies whether the alert is enabled"
+            }
+        },
+        "500xMetricName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the metric used in the comparison to activate the alert."
+            }
+        },
+        "400xMetricName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the metric used in the comparison to activate the alert."
+            }
+        },
+        "operator": {
+            "type": "string",
+            "allowedValues": [
+                "Equals",
+                "NotEquals",
+                "GreaterThan",
+                "GreaterThanOrEqual",
+                "LessThan",
+                "LessThanOrEqual"
+            ],
+            "metadata": {
+                "description": "Operator comparing the current value with the threshold value."
+            }
+        },
+        "MetricThreshold": {
+            "type": "string",
+            "defaultValue": "0",
+            "metadata": {
+                "description": "The threshold value at which the alert is activated."
+            }
+        },
+        "timeAggregation": {
+            "type": "string",
+            "allowedValues": [
+                "Average",
+                "Minimum",
+                "Maximum",
+                "Total",
+                "Count"
+            ],
+            "metadata": {
+                "description": "How the data that is collected should be combined over time."
+            }
+        },
+        "windowSize": {
+            "type": "string",
+            "allowedValues": [
+                "PT1M",
+                "PT5M",
+                "PT15M",
+                "PT30M",
+                "PT1H",
+                "PT6H",
+                "PT12H",
+                "PT24H"
+            ],
+            "metadata": {
+                "description": "Period of time used to monitor alert activity based on the threshold. Must be between one minute and one day. ISO 8601 duration format."
+            }
+        },
+        "evaluationFrequency": {
+            "type": "string",
+            "allowedValues": [
+                "PT1M",
+                "PT5M",
+                "PT15M",
+                "PT30M",
+                "PT1H"
+            ],
+            "metadata": {
+                "description": "how often the metric alert is evaluated represented in ISO 8601 duration format"
+            }
+        },
+        "alertEmailRecievers": {
             "type": "String",
             "metadata": {
-                "description": "The Azure AD client secret."
+                "description": "Common email for Keolis distrubition group"
             }
         },
-        "azureAdClientId": {
-            "defaultValue": "AzureAdClientId",
-            "type": "String",
+        "sendGridBookingConfirmationTemplateId": {
+            "defaultValue": "sendGridBookingConfirmationTemplateId",
+            "type": "string",
             "metadata": {
-                "description": "The Azure AD client id."
+                "description": "SendGrid booking confirmation template id."
             }
         },
-        "tarotOrganisationToken": {
-            "defaultValue": "Keolis",
-            "type": "String",
+        "sendGridDemandEventConfirmationTemplateId": {
+            "defaultValue": "sendGridDemandEventConfirmationTemplateId",
+            "type": "string",
             "metadata": {
-                "description": "The Tarot organisation token."
+                "description": "SendGrid demand event confirmation template Id."
             }
         }
     },
     "variables": {
         "projectName": "[toLower(parameters('projectName'))]",
-        "subsidiaryName": "[toLower(parameters('subsidiary'))]",
         "groupSuffix": "[substring(uniquestring(resourceGroup().id),0,5)]",
-        "sqlsrvName": "[concat(parameters('env'), '-', variables('projectName'), '-sql-srv-', variables('subsidiaryName'), '-', variables('groupSuffix'))]",
-        "keyVaultName": "[concat(parameters('env'), '-', variables('projectName'), '-kv-', variables('subsidiaryName'), '-', variables('groupSuffix'))]",
+        "keyVaultName": "[concat(parameters('env'), '-', variables('projectName'), '-kv-', parameters('subsidiary'), '-', variables('groupSuffix'))]",
         "functionAppName": "[concat(parameters('env'), '-', variables('projectName'), '-fa-', parameters('functionAppName'), '-', variables('groupSuffix'))]",
-        "serviceBusNamespaceName": "[concat(parameters('env'), '-', variables('projectName'), '-sb-', variables('subsidiaryName'), '-', variables('groupSuffix'))]",
         "storageAccountName": "[replace(concat(parameters('env'), variables('projectName'), 'sa', parameters('functionAppName'), variables('groupSuffix')),'-','')]",
-        "dataLakeAccountName": "[replace(concat(parameters('env'), variables('projectName'), 'datalake', variables('subsidiaryName'), variables('groupSuffix')),'-','')]",
+        "serviceBusNamespaceName": "[concat(parameters('env'), '-', variables('projectName'), '-sb-', parameters('subsidiary'), '-', variables('groupSuffix'))]",
         "applicationInsightsName": "[concat(parameters('env'), '-', variables('projectName'), '-appins-', parameters('functionAppName'), '-', variables('groupSuffix'))]",
         "functionsWebFarmName": "[concat(parameters('env'),'-', variables('projectName'), '-asp-', parameters('functionAppName'), '-', variables('groupSuffix'))]",
+        "notificationHubNamespaceName": "[concat(parameters('env'),'-', variables('projectName'), '-nhnms-', parameters('subsidiary'), '-', variables('groupSuffix'))]",
+        "notificationHubName": "[concat(parameters('env'), '-', variables('projectName'), '-nhub-', parameters('subsidiary'), '-', variables('groupSuffix'))]",
         "resourceTags": {
             "environment": "[parameters('env')]",
-            "program": "[toUpper(parameters('projectName'))]",
-            "sla": "[parameters('sla')]",
-            "appli": "[concat(parameters('projectName'),'-', variables('subsidiaryName'))]",
-            "subsidiary": "[variables('subsidiaryName')]"
+            "program":  "[toUpper(parameters('projectName'))]",
+            "subsidiary": "[parameters('subsidiary')]"
         },
-        "accountName": "[concat(parameters('env'),'-', variables('projectName'),'-', 'cosmos','-', variables('subsidiaryName'), '-', variables('groupSuffix'))]",
-        "cosmosDatabaseName": "[parameters('subsidiary')]",
-        "cosmosDBLocations": [
-            {
-                "locationName": "[parameters('location')]",
-                "failoverPriority": 0,
-                "isZoneRedundant": false
-            }
-        ],
 
         "sbVersion": "2017-04-01",
-        "keyVaultVersion": "2018-02-14",
+        "keyVaultApiVersion": "2018-02-14",
+        "keyVaultSecretApiVersion": "2015-06-01",
+        "notificationHubApiVersion": "2017-04-01",
         "functionAppApiVersion": "2020-12-01",
         "microsoftInsightsApiVersion": "2020-02-02",
-        "sbListenOnlyKeyName": "ListenSB",
 
-        "storageAccountSecretName": "[concat('driver','StorageAccountName','Secret')]",
+        "storageAccountSecretName": "[concat('notificationStorageAccountName','Secret')]",
+        "notificationHubPathSecretName": "[concat('notificationHubPath','Secret')]",
+        "notificationHubConnectionSecretName": "[concat('notificationHubConnection','Secret')]",
+        "sendGridKeySecretName": "[concat('sendGridKey','Secret')]",
+        "serviceBusConnectionSecretName": "[concat('serviceBusConnection', 'Secret')]",
         "cosmosConnectionStringSecretName": "[concat('cosmosConnectionString', 'Secret')]",
         "databaseSecretKeySecretName": "[concat('databaseSecretKey', 'Secret')]",
-        "dbConnectionStringSecretName": "[concat('dbConnectionSM','Secret')]",
-        "serviceBusConnectionSecretName": "[concat('serviceBusConnection', 'Secret')]",
-        "dataLakeAccountKeySecretName": "[concat('dataLakeAccountKey','Secret')]",
 
-        "dataLakeAccountResourceId": "[resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeAccountName'))]",
-        "dataLakeAccountKeySecretResourceId": "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('dataLakeAccountKeySecretName'))]",
-        "serviceBusConnectionSecretResourceId": "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('serviceBusConnectionSecretName'))]",
         "storageAccountResourceId": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+        "notificationHubPathSecretNameResourceId": "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('notificationHubPathSecretName'))]",
         "storageAccountSecretResourceId": "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('storageAccountSecretName'))]",
-        "dbConnectionStringSecretResourceId": "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('dbConnectionStringSecretName'))]",
+        "notificationHubConnectionSecretResourceId": "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('notificationHubConnectionSecretName'))]",
+        "serviceBusConnectionSecretResourceId": "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('serviceBusConnectionSecretName'))]",
         "cosmosConnectionStringSecretResourceId": "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('cosmosConnectionStringSecretName'))]",
-        "databaseSecretKeySecretResourceId": "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('databaseSecretKeySecretName'))]"
+        "databaseSecretKeySecretResourceId": "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('databaseSecretKeySecretName'))]",
+        "sendGridKeySecretResourceId": "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('sendGridKeySecretName'))]",
+        "actionGroupName": "[concat(parameters('env'),'-', variables('projectName'),'-',parameters('actionGroupName'),'-', variables('groupSuffix'))]",
+        "actionGroupShortName": "[concat(parameters('env'), variables('projectName'),parameters('actionGroupShortName'), variables('groupSuffix'))]"
     },
     "resources": [
         {
@@ -262,7 +571,7 @@
             "tags": "[variables('resourceTags')]",
             "properties": {
                 "Application_Type": "web",
-                "applicationId": "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]"
+                "applicationId": "[resourceId('Microsoft.Insights/components',variables('applicationInsightsName'))]"
             }
         },
         {
@@ -274,37 +583,46 @@
             "properties": {},
             "resources": [
                 {
-                    "apiVersion": "[variables('sbVersion')]",
-                    "name": "[parameters('serviceModificationQueueName')]",
+                    "apiVersion": "2021-01-01-preview",
+                    "name": "[parameters('serviceBusEmailQueueName')]",
                     "type": "Queues",
                     "dependsOn": [
                         "[resourceId('Microsoft.ServiceBus/namespaces/', variables('serviceBusNamespaceName'))]"
-                    ],
-                    "properties": {},
-                    "resources": []
-                },
-                {
-                    "apiVersion": "2021-01-01-preview",
-                    "name": "[parameters('jobValidationQueueName')]",
-                    "type": "Queues",
-                    "dependsOn": [
-                        "[resourceId('Microsoft.ServiceBus/namespaces/', variables('serviceBusNamespaceName'))]"
-                    ],
-                    "properties": {},
-                    "resources": []
-                },
-                {
-                    "type": "authorizationRules",
-                    "apiVersion": "2021-01-01-preview",
-                    "name": "[variables('sbListenOnlyKeyName')]",
-                    "dependsOn": [
-                        "[variables('serviceBusNamespaceName')]"
                     ],
                     "properties": {
                         "rights": [
                             "Listen"
                         ]
-                    }
+                    },
+                    "resources": []
+                },
+                {
+                    "apiVersion": "2021-01-01-preview",
+                    "name": "[parameters('serviceBusSmsQueueName')]",
+                    "type": "Queues",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.ServiceBus/namespaces/', variables('serviceBusNamespaceName'))]"
+                    ],
+                    "properties": {
+                        "rights": [
+                            "Listen"
+                        ]
+                    },
+                    "resources": []
+                },
+                {
+                    "apiVersion": "2021-01-01-preview",
+                    "name": "[parameters('serviceBusNotifQueueName')]",
+                    "type": "Queues",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.ServiceBus/namespaces/', variables('serviceBusNamespaceName'))]"
+                    ],
+                    "properties": {
+                        "rights": [
+                            "Listen"
+                        ]
+                    },
+                    "resources": []
                 }
             ]
         },
@@ -342,48 +660,6 @@
             }
         },
         {
-            "type": "Microsoft.Sql/servers",
-            "apiVersion": "2014-04-01-preview",
-            "name": "[variables('sqlsrvName')]",
-            "location": "[parameters('location')]",
-            "tags": "[variables('resourceTags')]",
-            "properties": {
-                "administratorLogin": "[parameters('sqlsrvnameAdminLogin')]",
-                "administratorLoginPassword": "[parameters('sqlsrvnameAdminLoginPassword')]"
-            },
-            "resources": [
-                {
-                    "type": "firewallrules",
-                    "apiVersion": "2014-04-01-preview",
-                    "name": "AllowAllWindowsAzureIps",
-                    "location": "[parameters('location')]",
-                    "dependsOn": [
-                        "[resourceId('Microsoft.Sql/servers', variables('sqlsrvName'))]"
-                    ],
-                    "properties": {
-                        "startIpAddress": "0.0.0.0",
-                        "endIpAddress": "0.0.0.0"
-                    }
-                },
-                {
-                    "type": "databases",
-                    "apiVersion": "2021-02-01-preview",
-                    "name": "[parameters('subsidiaryManagementDatabaseName')]",
-                    "location": "[parameters('location')]",
-                    "dependsOn": [
-                        "[resourceId('Microsoft.Sql/servers', variables('sqlsrvName'))]"
-                    ],
-                    "tags": "[variables('resourceTags')]",
-                    "properties": {
-                        "collation": "SQL_Latin1_General_CP1_CI_AS",
-                        "edition": "Basic",
-                        "maxSizeBytes": "1073741824",
-                        "requestedServiceObjectiveName": "Basic"
-                    }
-                }
-            ]
-        },
-        {
             "type": "Microsoft.KeyVault/vaults",
             "apiVersion": "2019-09-01",
             "name": "[variables('keyVaultName')]",
@@ -415,7 +691,7 @@
                         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
                     ],
                     "properties": {
-                        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountResourceId'),'2015-05-01-preview').key1)]"
+                        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountResourceId'), '2015-05-01-preview').key1)]"
                     }
                 },
                 {
@@ -424,11 +700,59 @@
                     "name": "[variables('cosmosConnectionStringSecretName')]",
                     "location": "[parameters('location')]",
                     "dependsOn": [
-                        "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]",
-                        "[resourceId('Microsoft.DocumentDB/databaseAccounts',variables('accountName'))]"
+                        "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]"
                     ],
                     "properties": {
-                        "value": "[concat('https://', variables('accountName'),'.documents.azure.com:443/')]"
+                        "value": "[parameters('cosmosConnectionString')]"
+                    }
+                },
+                {
+                    "type": "secrets",
+                    "apiVersion": "2019-09-01",
+                    "name": "[variables('databaseSecretKeySecretName')]",
+                    "location": "[parameters('location')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]"
+                    ],
+                    "properties": {
+                        "value": "[parameters('databaseSecretKey')]"
+                    }
+                },
+                {
+                    "type": "secrets",
+                    "apiVersion": "2019-09-01",
+                    "name": "[variables('notificationHubConnectionSecretName')]",
+                    "location": "[parameters('location')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]",
+                        "[resourceId('Microsoft.NotificationHubs/namespaces/notificationHubs', variables('notificationHubNamespaceName'), variables('notificationHubName'))]"
+                    ],
+                    "properties": {
+                        "value": "[listKeys(resourceId('Microsoft.NotificationHubs/namespaces/notificationHubs/authorizationRules', variables('notificationHubNamespaceName'), variables('notificationHubName'), 'DefaultFullSharedAccessSignature'), variables('notificationHubApiVersion')).primaryConnectionString]"
+                    }
+                },
+                {
+                    "type": "secrets",
+                    "apiVersion": "2019-09-01",
+                    "name": "[variables('notificationHubPathSecretName')]",
+                    "location": "[parameters('location')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]"
+                    ],
+                    "properties": {
+                        "value": "[variables('notificationHubName')]"
+                    }
+                },
+                {
+                    "type": "secrets",
+                    "apiVersion": "2019-09-01",
+                    "name": "[variables('sendGridKeySecretName')]",
+                    "location": "[parameters('location')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]"
+                    ],
+                    "properties": {
+                        "value": "[parameters('sendGridKey')]"
                     }
                 },
                 {
@@ -443,52 +767,13 @@
                     "properties": {
                         "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/AuthorizationRules',variables('serviceBusNamespaceName'), 'RootManageSharedAccessKey'), variables('sbVersion')).primaryConnectionString]"
                     }
-                },
-                {
-                    "type": "secrets",
-                    "apiVersion": "2019-09-01",
-                    "name": "[variables('databaseSecretKeySecretName')]",
-                    "location": "[parameters('location')]",
-                    "dependsOn": [
-                        "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]",
-                        "[resourceId('Microsoft.DocumentDB/databaseAccounts',variables('accountName'))]"
-                    ],
-                    "properties": {
-                        "value": "[listKeys(resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName')), '2020-04-01').primaryMasterKey]"
-                    }
-                },
-                {
-                    "type": "secrets",
-                    "apiVersion": "2019-09-01",
-                    "name": "[variables('dbConnectionStringSecretName')]",
-                    "location": "[parameters('location')]",
-                    "dependsOn": [
-                        "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]",
-                        "[resourceId('Microsoft.Sql/servers', variables('sqlsrvName'))]"
-                    ],
-                    "properties": {
-                        "value": "[concat('Data Source=tcp:', reference(resourceId('Microsoft.Sql/servers/', variables('sqlsrvName'))).fullyQualifiedDomainName, ',1433;Initial Catalog=', parameters('subsidiaryManagementDatabaseName'), ';User Id=', parameters('sqlsrvnameAdminLogin'), '@', reference(resourceId('Microsoft.Sql/servers/', variables('sqlsrvName'))).fullyQualifiedDomainName, ';Password=', parameters('sqlsrvnameAdminLoginPassword'), ';')]"
-                    }
-                },
-                {
-                    "type": "secrets",
-                    "apiVersion": "2019-09-01",
-                    "name": "[variables('dataLakeAccountKeySecretName')]",
-                    "location": "[parameters('location')]",
-                    "dependsOn": [
-                        "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]",
-                        "[resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeAccountName'))]"
-                    ],
-                    "properties": {
-                        "value": "[listKeys(variables('dataLakeAccountResourceId'),'2015-05-01-preview').key1]"
-                    }
                 }
             ]
         },
         {
             "type": "Microsoft.KeyVault/vaults/accessPolicies",
             "name": "[concat(variables('keyVaultName'), '/add')]",
-            "apiVersion": "[variables('keyVaultVersion')]",
+            "apiVersion": "[variables('keyVaultApiVersion')]",
             "dependsOn": [
                 "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]"
             ],
@@ -505,59 +790,6 @@
                         }
                     }
                 ]
-            }
-        },
-        {
-            "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "2020-08-01-preview",
-            "name": "[variables('dataLakeAccountName')]",
-            "tags": "[variables('resourceTags')]",
-            "location": "[parameters('location')]",
-            "sku": {
-                "name": "Standard_RAGRS",
-                "tier": "Standard"
-            },
-            "kind": "StorageV2",
-            "properties": {
-                "minimumTlsVersion": "TLS1_2",
-                "allowBlobPublicAccess": true,
-                "isHnsEnabled": true,
-                "networkAcls": {
-                    "bypass": "AzureServices",
-                    "defaultAction": "Allow"
-                },
-                "supportsHttpsTrafficOnly": true,
-                "encryption": {
-                    "services": {
-                        "file": {
-                            "keyType": "Account",
-                            "enabled": true
-                        },
-                        "blob": {
-                            "keyType": "Account",
-                            "enabled": true
-                        }
-                    },
-                    "keySource": "Microsoft.Storage"
-                },
-                "accessTier": "Hot"
-            }
-        },
-        {
-            "type": "Microsoft.Storage/storageAccounts/blobServices",
-            "apiVersion": "2020-08-01-preview",
-            "name": "[concat(variables('dataLakeAccountName'), '/default')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeAccountName'))]"
-            ],
-            "sku": {
-                "name": "Standard_RAGRS",
-                "tier": "Standard"
-            },
-            "properties": {
-                "deleteRetentionPolicy": {
-                    "enabled": false
-                }
             }
         },
         {
@@ -598,185 +830,166 @@
                         "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]",
                         "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]",
                         "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('storageAccountSecretName'))]",
-                        "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('dataLakeAccountKeySecretName'))]",
-                        "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('cosmosConnectionStringSecretName'))]",
+                        "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('notificationHubConnectionSecretName'))]",
+                        "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('notificationHubPathSecretName'))]",
                         "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('serviceBusConnectionSecretName'))]",
+                        "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('notificationHubConnectionSecretName'))]",
+                        "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('notificationHubPathSecretName'))]",
+                        "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('cosmosConnectionStringSecretName'))]",
                         "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('databaseSecretKeySecretName'))]",
-                        "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('dbConnectionStringSecretName'))]"
+                        "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('sendGridKeySecretName'))]"
                     ],
                     "properties": {
-                        "AzureWebJobsDashboard": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('storageAccountSecretResourceId'),'2015-06-01').secretUriWithVersion, ')')]",
-                        "AzureWebJobsStorage": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('storageAccountSecretResourceId'),'2015-06-01').secretUriWithVersion, ')')]",
-                        "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('storageAccountSecretResourceId'),'2015-06-01').secretUriWithVersion, ')')]",
+                        "AzureWebJobsDashboard": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('storageAccountSecretResourceId'), variables('keyVaultSecretApiVersion')).secretUriWithVersion, ')')]",
+                        "AzureWebJobsStorage": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('storageAccountSecretResourceId'), variables('keyVaultSecretApiVersion')).secretUriWithVersion, ')')]",
+                        "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('storageAccountSecretResourceId'), variables('keyVaultSecretApiVersion')).secretUriWithVersion, ')')]",
                         "WEBSITE_CONTENTSHARE": "[toLower(variables('functionAppName'))]",
                         "FUNCTIONS_EXTENSION_VERSION": "~3",
-                        "CosmosConnectionString": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('cosmosConnectionStringSecretResourceId'), '2015-06-01').secretUriWithVersion, ')')]",
-                        "DatabaseSecretKey": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('databaseSecretKeySecretResourceId'), '2015-06-01').secretUriWithVersion, ')')]",
+                        "SENDGRID_KEY": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('sendGridKeySecretResourceId'), variables('keyVaultSecretApiVersion')).secretUriWithVersion, ')')]",
+                        "SENDGRID_FROM_EMAIL": "[parameters('sendGridFromEmail')]",
+                        "SENDGRID_FROM": "[parameters('sendGridFrom')]",
+                        "SENDGRID_TO_EMAIL": "[parameters('sendGridToEmail')]",
+                        "SENDGRID_ACCOUNT_CONFIRMATION_TEMPLATEID": "[parameters('sendGridAccountConfirmationTemplateId')]",
+                        "SENDGRID_ACCOUNT_ACTIVATION_TEMPLATEID": "[parameters('sendGridAccountActivationTemplateId')]",
+                        "SENDGRID_RESET_PASSWORD_TEMPLATEID": "[parameters('sendGridResetPasswordTemplateId')]",
+                        "SENDGRID_NEW_TPMR_DEMAND_TEMPLATEID": "[parameters('sendGridNewTpmrDemandTemplateId')]",
+                        "SENDGRID_CONTACT_TEMPLATEID": "[parameters('sendGridContactTemplateId')]",
+                        "SENDGRID_PASSWORD_CHANGED_TEMPLATEID": "[parameters('sendGridPasswordChangedTemplateId')]",
+                        "SENDGRID_TPMR_CLIENT_SUBSCRIPTION_TEMPLATEID": "[parameters('sendGridTpmrClientSubscriptionTemplateId')]",
+                        "SENDGRID_TPMR_SUBSCRIPTION_CONFIRMATION_TEMPLATEID": "[parameters('sendGridTpmrSubscriptionConfirmationTemplateId')]",
+                        "SENDGRID_PERSONAL_INFO_MODIFICATION_TEMPLATEID": "[parameters('sendGridPersonalInfoModificationTemplateId')]",
+                        "SENDGRID_CLAIM_TEMPLATEID": "[parameters('sendGridClaimTemplateId')]",
+                        "SENDGRID_DEMAND_CONFIRMATION_TEMPLATEID": "[parameters('sendGridDemandConfirmationTemplateId')]",
+                        "SENDGRID_ONE_WAY_DEMAND_TEMPLATEID": "[parameters('sendGridOneWayDemandTemplateId')]",
+                        "SENDGRID_ROUND_TRIP_DEMAND_TEMPLATEID": "[parameters('sendGridRoundTripDemandTemplateId')]",
+                        "SENDGRID_MULTI_DESTINATION_DEMAND_TEMPLATEID": "[parameters('sendGridMultidestinationDemandTemplateId')]",
+                        "SENDGRID_CONTACT_TOURISM_TEMPLATEID": "[parameters('sendGridContactTourismTemplateId')]",
+                        "SENDGRID_PASSWORD_WAS_RESET_TEMPLATEID": "[parameters('sendGridPasswordWasResetTemplateId')]",
+                        "SENDGRID_CLAIM_TOURISM_TEMPLATEID": "[parameters('sendGridClaimTourismTemplateId')]",
+                        "SENDGRID_REINSURANCE_DAY_BEFORE_TEMPLATEID": "[parameters('sendGridReinsuranceDayBeforeTemplateId')]",
+                        "SENDGRID_REINSURANCE_FIRST_TEMPLATEID": "[parameters('sendGridReinsuranceFirstTemplateId')]",
+                        "SENDGRID_REINSURANCE_SECOND_TEMPLATEID": "[parameters('sendGridReinsuranceSecondTemplateId')]",
+                        "SENDGRID_TRAPEZE_AGENT_ACCOUNT_CREATION_TEMPLATEID": "[parameters('sendGridTrapezeAgentAccountCreationTemplateId')]",
+                        "SENDGRID_APPLICATION_NOTICE_TEMPLATEID": "[parameters('sendGridApplicationNoticeTemplateId')]",
+                        "SENDGRID_LOST_OBJECT_TEMPLATEID": "[parameters('sendGridLostObjectTemplateId')]",
+                        "SENDGRID_INFO_REQUEST_TEMPLATEID": "[parameters('sendGridInfoRequestTemplateId')]",
+                        "MilleMercisUseMultipleMessage": "[parameters('milleMercisUseMultipleMessage')]",
+                        "MilleMercisPrioritySpecified": "[parameters('milleMercisPrioritySpecified')]",
+                        "MilleMercisPriority": "[parameters('milleMercisPriority')]",
+                        "MilleMercisReceiveAR": "[parameters('milleMercisReceiveAR')]",
+                        "MilleMercisDestinationType": "[parameters('milleMercisDestinationType')]",
+                        "MilleMercisFrom": "[parameters('milleMercisFrom')]",
+                        "MilleMercisPassword": "[parameters('milleMercisPassword')]",
+                        "MilleMercisLogin": "[parameters('milleMercisLogin')]",
+                        "MilleMercisAppId": "[parameters('milleMercisAppId')]",
+                        "NotificationHubConnection": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('notificationHubConnectionSecretResourceId'), variables('keyVaultSecretApiVersion')).secretUriWithVersion, ')')]",
+                        "NotificationHubPath": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('notificationHubPathSecretNameResourceId'), variables('keyVaultSecretApiVersion')).secretUriWithVersion, ')')]",
+                        "ServiceBusConnection": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('serviceBusConnectionSecretResourceId'), variables('keyVaultSecretApiVersion')).secretUriWithVersion, ')')]",
+                        "EmailQueueName": "[parameters('serviceBusEmailQueueName')]",
+                        "PushQueueName": "[parameters('serviceBusNotifQueueName')]",
+                        "SmsQueueName": "[parameters('serviceBusSmsQueueName')]",
+                        "CosmosConnectionString": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('cosmosConnectionStringSecretResourceId'), variables('keyVaultSecretApiVersion')).secretUriWithVersion, ')')]",
+                        "DatabaseSecretKey": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('databaseSecretKeySecretResourceId'), variables('keyVaultSecretApiVersion')).secretUriWithVersion, ')')]",
                         "DatabaseName": "[parameters('databaseName')]",
+                        "UserNotificationCollectionId": "[parameters('userNotificationCollectionId')]",
                         "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('microsoft.insights/components/', variables('applicationInsightsName')), variables('microsoftInsightsApiVersion')).InstrumentationKey]",
-                        "DbConnectionString": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('dbConnectionStringSecretResourceId'),'2015-06-01').secretUriWithVersion, ')')]",
-                        "ServiceBusConnection": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('serviceBusConnectionSecretResourceId'), '2015-06-01').secretUriWithVersion, ')')]",
-                        "BookingCollectionName": "[parameters('bookingCollectionName')]",
-                        "ServicesSchedulesCollectionName": "[parameters('servicesSchedulesCollectionName')]",
-                        "ManualServicesSchedulesCollectionName": "[parameters('manualServicesSchedulesCollectionName')]",
-                        "UserServiceBaseAddress": "[parameters('userServiceBaseAddress')]",
-                        "IdentityServerUrl": "[parameters('identityServerUrl')]",
-                        "ServiceModificationQueueName": "[parameters('serviceModificationQueueName')]",
-                        "JobValidationQueueName": "[parameters('jobValidationQueueName')]",
-                        "ServiceBusQueuePath": "[parameters('serviceBusQueuePath')]",
-                        "TarotServiceUrl": "[parameters('tarotServiceUrl')]",
-                        "AzureAdBaseUrl": "[parameters('azureAdBaseUrl')]",
-                        "AzureAdClientSecret": "[parameters('azureAdClientSecret')]",
-                        "AzureAdClientId": "[parameters('azureAdClientId')]",
-                        "TarotOrganisationToken": "[parameters('tarotOrganisationToken')]",
-                        "DataLakeAccountName": "[variables('dataLakeAccountName')]",
-                        "DataLakeAccountKey": "[concat('@Microsoft.KeyVault(SecretUri=', reference(variables('dataLakeAccountKeySecretResourceId'), '2015-06-01').secretUriWithVersion, ')')]",
-                        "JobResultFileName": "[parameters('jobResultFileName')]",
-                        "SasUriMinutesActive": "[parameters('sasUriMinutesActive')]",
-                        "SubsidiaryName": "[variables('subsidiaryName')]",
-                        "WEBSITE_TIME_ZONE": "[parameters('WEBSITE_TIME_ZONE')]"
+                        "IdentityServerUrl" : "[parameters('identityServerUrl')]",
+                        "SENDGRID_BOOKING_CONFIRMATION_TEMPLATEID": "[parameters('sendGridBookingConfirmationTemplateId')]",
+                        "SENDGRID_DEMAND_EVENT_CONFIRMATION_TEMPLATEID": "[parameters('sendGridDemandEventConfirmationTemplateId')]",
+                        "SENDGRID_EMAIL_MODIFICATION_CONFIRMATION_TEMPLATEID": "[parameters('sendGridEmailModificationConfirmationTemplateId')]"
                     }
                 }
             ]
         },
         {
-            "type": "Microsoft.DocumentDB/databaseAccounts",
-            "name": "[variables('accountName')]",
-            "apiVersion": "2020-04-01",
+            "apiVersion": "[variables('notificationHubApiVersion')]",
+            "name": "[variables('notificationHubNamespaceName')]",
+            "type": "Microsoft.NotificationHubs/namespaces",
             "location": "[parameters('location')]",
+            "tags": "[variables('resourceTags')]",
+            "kind": "NotificationHub",
+            "sku": {
+                "name": "Basic"
+            },
             "properties": {
-                "consistencyPolicy": {
-                    "defaultConsistencyLevel": "Session"
-                },
-                "databaseAccountOfferType": "Standard",
-                "locations": "[variables('cosmosDBLocations')]"
-            }
-        },
-        {
-            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
-            "name": "[concat(variables('accountName'), '/', variables('cosmosDatabaseName'))]",
-            "apiVersion": "2020-04-01",
-            "dependsOn": [
-                "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName'))]"
-            ],
-            "properties": {
-                "resource": {
-                    "id": "[variables('cosmosDatabaseName')]"
+                "name": "[variables('notificationHubNamespaceName')]",
+                "namespaceType": "NotificationHub"
+            },
+            "resources": [
+                {
+                    "name": "[concat(variables('notificationHubNamespaceName'), '/', variables('notificationHubName'))]",
+                    "apiVersion": "[variables('notificationHubApiVersion')]",
+                    "type": "Microsoft.NotificationHubs/namespaces/notificationHubs",
+                    "location": "[parameters('location')]",
+                    "properties": {
+                        "name": "[variables('notificationHubName')]"
+                    },
+                    "dependsOn": [
+                        "[resourceId('Microsoft.NotificationHubs/namespaces/', variables('notificationHubNamespaceName'))]"
+                    ]
                 }
+            ]
+        },
+        {
+            "type": "Microsoft.Insights/actionGroups",
+            "apiVersion": "2019-06-01",
+            "name": "[variables('actionGroupName')]",
+            "location": "global",
+            "properties": {
+                "groupShortName": "[variables('actionGroupShortName')]",
+                "enabled": true,
+                "emailReceivers": [
+                    {
+                        "name":"Keolis distribution group",
+                        "emailAddress": "[parameters('alertEmailRecievers')]",
+                        "useCommonAlertSchema": true
+                    }
+                ]
             }
         },
         {
-            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
-            "name": "[concat(variables('accountName'), '/', variables('cosmosDatabaseName'), '/', parameters('bookingCollectionName'))]",
-            "apiVersion": "2020-04-01",
+            "name": "[parameters('alertName')]",
+            "type": "Microsoft.Insights/metricAlerts",
+            "location": "global",
+            "apiVersion": "2018-03-01",
             "dependsOn": [
-                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', variables('accountName'), variables('cosmosDatabaseName'))]"
+                "[resourceId('Microsoft.Web/sites/', variables('functionAppName'))]",
+                "[resourceId('Microsoft.Insights/actionGroups', variables('actionGroupName'))]",
+                "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]"
             ],
             "properties": {
-                "resource": {
-                    "id": "[parameters('bookingCollectionName')]",
-                    "indexingPolicy": {
-                        "indexingMode": "consistent",
-                        "automatic": true,
-                        "includedPaths": [
-                            {
-                                "path": "/*"
-                            }
-                        ],
-                        "excludedPaths": [
-                            {
-                                "path": "/\"_etag\"/?"
-                            }
-                        ]
-                    },
-                    "partitionKey": {
-                        "paths": [
-                            "/id"
-                        ],
-                        "kind": "Hash"
-                    },
-                    "conflictResolutionPolicy": {
-                        "mode": "LastWriterWins",
-                        "conflictResolutionPath": "/_ts"
-                    }
+                "description": "[parameters('alertDescription')]",
+                "severity": "[parameters('alertSeverity')]",
+                "enabled": "[parameters('isEnabled')]",
+                "scopes": [ "[resourceId('Microsoft.Web/sites/', variables('functionAppName'))]" ],
+                "evaluationFrequency": "[parameters('evaluationFrequency')]",
+                "windowSize": "[parameters('windowSize')]",
+                "criteria": {
+                    "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria",
+                    "allOf": [
+                        {
+                            "name": "1st criterion",
+                            "metricName": "[parameters('500xMetricName')]",
+                            "operator": "[parameters('operator')]",
+                            "threshold": "[parameters('MetricThreshold')]",
+                            "timeAggregation": "[parameters('timeAggregation')]",
+                            "criterionType": "StaticThresholdCriterion"
+                        },
+                        {
+                            "name": "2nd criterion",
+                            "metricName": "[parameters('400xMetricName')]",
+                            "operator": "[parameters('operator')]",
+                            "threshold": "[parameters('MetricThreshold')]",
+                            "timeAggregation": "[parameters('timeAggregation')]",
+                            "criterionType": "StaticThresholdCriterion"
+                        }
+                    ]
                 },
-                "options": { "throughput": "[parameters('throughput')]" }
-            }
-        },
-        {
-            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
-            "name": "[concat(variables('accountName'), '/', variables('cosmosDatabaseName'), '/', parameters('servicesSchedulesCollectionName'))]",
-            "apiVersion": "2020-04-01",
-            "dependsOn": [
-                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', variables('accountName'), variables('cosmosDatabaseName'))]"
-            ],
-            "properties": {
-                "resource": {
-                    "id": "[parameters('servicesSchedulesCollectionName')]",
-                    "indexingPolicy": {
-                        "indexingMode": "consistent",
-                        "automatic": true,
-                        "includedPaths": [
-                            {
-                                "path": "/*"
-                            }
-                        ],
-                        "excludedPaths": [
-                            {
-                                "path": "/\"_etag\"/?"
-                            }
-                        ]
-                    },
-                    "partitionKey": {
-                        "paths": [
-                            "/id"
-                        ],
-                        "kind": "Hash"
-                    },
-                    "conflictResolutionPolicy": {
-                        "mode": "LastWriterWins",
-                        "conflictResolutionPath": "/_ts"
+                "actions": [
+                    {
+                        "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', variables('actionGroupName'))]"
                     }
-                },
-                "options": { "throughput": "[parameters('throughput')]" }
-            }
-        },
-        {
-            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
-            "name": "[concat(variables('accountName'), '/', variables('cosmosDatabaseName'), '/', parameters('manualServicesSchedulesCollectionName'))]",
-            "apiVersion": "2020-04-01",
-            "dependsOn": [
-                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', variables('accountName'), variables('cosmosDatabaseName'))]"
-            ],
-            "properties": {
-                "resource": {
-                    "id": "[parameters('manualServicesSchedulesCollectionName')]",
-                    "indexingPolicy": {
-                        "indexingMode": "consistent",
-                        "automatic": true,
-                        "includedPaths": [
-                            {
-                                "path": "/*"
-                            }
-                        ],
-                        "excludedPaths": [
-                            {
-                                "path": "/\"_etag\"/?"
-                            }
-                        ]
-                    },
-                    "partitionKey": {
-                        "paths": [
-                            "/id"
-                        ],
-                        "kind": "Hash"
-                    },
-                    "conflictResolutionPolicy": {
-                        "mode": "LastWriterWins",
-                        "conflictResolutionPath": "/_ts"
-                    }
-                },
-                "options": { "throughput": "[parameters('throughput')]" }
+                ]
             }
         }
     ],
