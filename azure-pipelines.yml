@@ -23,7 +23,7 @@ steps:
      script: |
         echo 'Cloning into sources folder at: $(Build.SourcesDirectory)'
         git clone --branch=v1.2.1 https://github.com/char0n/swagger-editor-validate.git
-        cd /home/runner/work/_actions/char0n/swagger-editor-validate/v1.2.1 && npm install
+        cd swagger-editor-validate && npm install
         echo "Validating $(URL_TO_VALIDATE):"
         exit
 
