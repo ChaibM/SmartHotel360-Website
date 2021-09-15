@@ -1,19 +1,13 @@
-name: .NET
-
+name: swagger-validate
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
 jobs:
-  test_swagger_editor_validator_remote:
+  build:
+    container: gkarthics/swagger-validate:0.2.0
     runs-on: ubuntu-latest
-    name: Swagger Editor Validator Remote
-
     steps:
-      - uses: actions/checkout@v2
-      - name: Validate OpenAPI definition
-        uses: char0n/swagger-editor-validate@v1.2.1
-        with:
-          definition-file: openapi-2-0.yaml
+    - uses: actions/checkout@v2
+    - name: validate
+      run: validate  openapi-2-0.yaml
+    
