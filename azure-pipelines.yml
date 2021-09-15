@@ -11,6 +11,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   BuildConfiguration: 'Release'
+  URL_TO_VALIDATE: 'hello.file'
 
 steps:
 - task: CmdLine@2
@@ -18,6 +19,8 @@ steps:
   inputs:
      script: |
         echo 'Cloning into sources folder at: $(Build.SourcesDirectory)'
-        git clone https://github.com/char0n/swagger-editor-validate.git
+        git clone --branch=v2.0.0 https://github.com/swagger-api/validator-badge.git
+        cd validator-badge
+        echo "Validating $URL_TO_VALIDATE:"
         exit
 
