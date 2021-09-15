@@ -14,7 +14,7 @@ variables:
   GH_URL: 'https://raw.githubusercontent.com'
   VALIDATOR_URL: 'http://localhost:8080/validator/debug?url'
   FILE_TO_VALIDATE: 'openapi-2-0.yaml'
-  URL_TO_VALIDATE: '$FILE_TO_VALIDATE'
+  URL_TO_VALIDATE: 'hello'
 
 steps:
 - task: CmdLine@2
