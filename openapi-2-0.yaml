@@ -34,8 +34,7 @@ paths:
         - "pet"
       summary: "Add a new pet to the store"
       description: ""
-      operationId: "addPet"
-      consumes:
+      operationId: "addPet
         - "application/json"
         - "application/xml"
             $ref: "#/definitions/Pet"
