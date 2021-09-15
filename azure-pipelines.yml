@@ -29,5 +29,5 @@ steps:
   displayName: 'V'
   inputs:
      script: |
-        cd swagger-editor-validate && SWAGGER_EDITOR_URL=https://editor.swagger.io/ DEFINITION_FILE=openapi-2-0.yaml node src/index.js
+        cd swagger-editor-validate && node src/index.js
 
