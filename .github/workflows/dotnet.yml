@@ -14,6 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Validate OpenAPI definition
-        uses: char0n/swagger-editor-validate@latest
+        uses: char0n/swagger-editor-validate@v1.2.1
         with:
           definition-file: examples/openapi-2-0.yaml
