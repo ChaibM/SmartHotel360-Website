@@ -684,10 +684,7 @@ definitions:
           - "pending"
           - "sold"
     xml:
-      name: "Pet"
-  ApiResponse:
-    type: "object"
-    properties:
+     
       code:
         type: "integer"
         format: "int32"
