@@ -12,16 +12,12 @@ variables:
   buildPlatform: 'Any CPU'
   BuildConfiguration: 'Release'
 
-
-- task: RunARMTTKTests@1
+steps:
+- task: CmdLine@2
+  displayName: 'Validate OpenAPI definition'
   inputs:
-    templatelocation: '$(System.DefaultWorkingDirectory)/Deploy/*.json'
-    resultLocation: '$(System.DefaultWorkingDirectory)/'
-    cliOutputResults: true
-
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'NUnit'
-    testResultsFiles: '$(System.DefaultWorkingDirectory)/*-armttk.xml'
-  condition: always()
+     script: |
+        echo 'Cloning into sources folder at: $(Build.SourcesDirectory)'
+        git clone https://github.com/char0n/swagger-editor-validate.git
+        exit
 
