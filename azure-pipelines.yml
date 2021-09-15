@@ -22,11 +22,8 @@ steps:
   inputs:
      script: |
         echo 'Cloning into sources folder at: $(Build.SourcesDirectory)'
-        git clone --branch=v2.0.0 https://github.com/swagger-api/validator-badge.git
-        cd validator-badge
-        mvn package -q -DskipTests=true -Dmaven.javadoc.skip=true -B -V jetty:run &
-        cd ..
-        sleep 60
+        git clone --branch=v1.2.1 https://github.com/char0n/swagger-editor-validate.git
+        cd /home/runner/work/_actions/char0n/swagger-editor-validate/v1.2.1 && npm install
         echo "Validating $(URL_TO_VALIDATE):"
         exit
 
