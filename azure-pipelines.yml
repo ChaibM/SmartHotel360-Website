@@ -21,6 +21,6 @@ steps:
         echo 'Cloning into sources folder at: $(Build.SourcesDirectory)'
         git clone --branch=v2.0.0 https://github.com/swagger-api/validator-badge.git
         cd validator-badge
-        echo "Validating $URL_TO_VALIDATE:"
+        echo "Validating $(URL_TO_VALIDATE):"
         exit
 
