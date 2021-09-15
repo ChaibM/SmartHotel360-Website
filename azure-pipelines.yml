@@ -13,7 +13,7 @@ variables:
   BuildConfiguration: 'Release'
   GH_URL: 'https://raw.githubusercontent.com'
   VALIDATOR_URL: 'http://localhost:8080/validator/debug?url'
-  FILE_TO_VALIDATE: 'openapi-2-0.yaml'
+  FILE_TO_VALIDATE: $(System.DefaultWorkingDirectory)/openapi-2-0.yaml'
   URL_TO_VALIDATE: 'hello'
 
 steps:
@@ -24,6 +24,6 @@ steps:
         echo 'Cloning into sources folder at: $(Build.SourcesDirectory)'
         git clone --branch=v1.2.1 https://github.com/char0n/swagger-editor-validate.git
         cd swagger-editor-validate && npm install
-        echo "Validating $(URL_TO_VALIDATE):"
+        cd swagger-editor-validate && SWAGGER_EDITOR_URL=https://editor.swagger.io/ DEFINITION_FILE=openapi-2-0.yaml node src/index.js
         exit
 
