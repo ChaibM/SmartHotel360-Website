@@ -38,15 +38,6 @@ paths:
       consumes:
         - "application/json"
         - "application/xml"
-      produces:
-        - "application/xml"
-        - "application/json"
-      parameters:
-        - in: "body"
-          name: "body"
-          description: "Pet object that needs to be added to the store"
-          required: true
-          schema:
             $ref: "#/definitions/Pet"
       responses:
         "405":
