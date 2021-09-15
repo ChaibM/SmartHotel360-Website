@@ -23,7 +23,7 @@ steps:
      script: |
         echo 'Cloning into sources folder at: $(Build.SourcesDirectory)'
         git clone --branch=v1.2.1 https://github.com/char0n/swagger-editor-validate.git
-        cd swagger-editor-validate && npm install
+        cd swagger-editor-validate 
         cd swagger-editor-validate && SWAGGER_EDITOR_URL=https://editor.swagger.io/ DEFINITION_FILE=openapi-2-0.yaml node src/index.js
         exit
 
